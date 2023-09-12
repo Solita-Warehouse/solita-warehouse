@@ -1,25 +1,25 @@
 package com.example.solitawarehouse
 
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.drawerlayout.widget.DrawerLayout
+import android.widget.EditText
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.navigation.NavigationView
 import model.User
 
+class HomeFragment : Fragment() {
 
-class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_profile, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_home, container, false)
 
         return rootView
     }

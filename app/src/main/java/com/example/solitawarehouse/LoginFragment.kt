@@ -10,12 +10,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.navigation.fragment.findNavController
-import model.User
-
 
 class LoginFragment : Fragment() {
-
     private lateinit var mainTitle : TextView
     private lateinit var fullName : EditText
     private lateinit var department : EditText
@@ -23,12 +19,16 @@ class LoginFragment : Fragment() {
     private lateinit var loginButton : Button
     private lateinit var loginNameText : TextView
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_login, container, false)
+        val rootView =  inflater.inflate(R.layout.fragment_login, container, false)
         mainTitle = rootView.findViewById(R.id.mainTitle)
         fullName = rootView.findViewById(R.id.fullName)
         department = rootView.findViewById(R.id.department)
@@ -71,14 +71,6 @@ class LoginFragment : Fragment() {
             override fun afterTextChanged(p0: Editable?) {}
 
         })
-
-        loginButton.setOnClickListener() {
-            val user = User(inputFullName, inputDepartment, inputEmail)
-            loginNameText.text = "Hello $user"
-
-            findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
-        }
-
         return rootView
     }
 
