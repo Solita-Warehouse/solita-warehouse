@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout = findViewById(R.id.drawerLayout)
         val navView : NavigationView = findViewById(R.id.nav_view)
+        replaceFragment(LandingPageFragment(), "Welcome")
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
