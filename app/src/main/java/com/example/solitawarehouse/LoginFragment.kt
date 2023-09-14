@@ -3,6 +3,7 @@ package com.example.solitawarehouse
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.findNavController
 
 class LoginFragment : Fragment() {
     private lateinit var mainTitle : TextView
@@ -33,7 +36,7 @@ class LoginFragment : Fragment() {
         fullName = rootView.findViewById(R.id.fullName)
         department = rootView.findViewById(R.id.department)
         eMail = rootView.findViewById(R.id.eMail)
-        loginButton = rootView.findViewById(R.id.logoutButton)
+        loginButton = rootView.findViewById(R.id.LoginButton)
         loginNameText = rootView.findViewById(R.id.loginNameText)
         var inputFullName = ""
         var inputDepartment = ""
@@ -69,6 +72,13 @@ class LoginFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {}
+
+        })
+
+        loginButton.setOnClickListener(object: View.OnClickListener {
+            override fun onClick(p0: View?) {
+                Log.i("", "Button clicked")
+            }
 
         })
         return rootView

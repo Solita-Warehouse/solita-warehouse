@@ -55,6 +55,11 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frameLayout, fragment)
         fragmentTransaction.commit()
+
+        /*if (fragment is LoginFragment) {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        }*/
+
         drawerLayout.closeDrawers()
         setTitle(title)
     }
@@ -64,6 +69,5 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
-
 
 }
