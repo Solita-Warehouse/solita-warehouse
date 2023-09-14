@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/drawerLayout"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".RentFragment">
+
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewRent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="174dp"
-        android:layout_marginTop="169dp"
-        android:layout_marginEnd="199dp"
-        android:text="Profile"
+        android:layout_marginStart="176dp"
+        android:layout_marginTop="204dp"
+        android:layout_marginEnd="177dp"
+        android:text="Rent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

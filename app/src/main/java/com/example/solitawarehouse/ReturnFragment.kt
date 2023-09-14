@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 
 
-class LandingPageFragment : Fragment() {
+class ReturnFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_landing_page, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_return, container, false)
         return rootView
     }
 

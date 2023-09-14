@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout = findViewById(R.id.drawerLayout)
         val navView : NavigationView = findViewById(R.id.nav_view)
-        replaceFragment(LandingPageFragment(), "Welcome")
+        replaceFragment(LoginFragment(), "Welcome")
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
@@ -40,10 +40,11 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener {
 
             when(it.itemId) {
-                R.id.nav_login -> replaceFragment(LoginFragment(), it.title.toString())
-                R.id.nav_home -> replaceFragment(HomeFragment(), it.title.toString())
-                R.id.nav_warehouse -> replaceFragment(WarehouseFragment(), it.title.toString())
-                R.id.nav_profile -> replaceFragment(ProfileFragment(), it.title.toString())
+                R.id.nav_loans -> replaceFragment(LoansFragment(), it.title.toString())
+                R.id.nav_rentitem -> replaceFragment(RentFragment(), it.title.toString())
+                R.id.nav_returnitem -> replaceFragment(ReturnFragment(), it.title.toString())
+                R.id.nav_itemavailability -> replaceFragment(AvailabilityFragment(), it.title.toString())
+                R.id.nav_reports -> replaceFragment(ReportsFragment(), it.title.toString())
             }; true
         }
 

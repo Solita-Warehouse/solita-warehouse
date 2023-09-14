@@ -6,15 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class WarehouseFragment : Fragment() {
+
+class ReportsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_warehouse, container, false)
-
+        val rootView = inflater.inflate(R.layout.fragment_reports, container, false)
         return rootView
     }
 
