@@ -4,20 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
     app:startDestination="@id/loginFragment">
-
+    <action
+        android:id="@+id/action_to_loansFragment"
+        app:destination="@id/loansFragment" />
+    <action
+        android:id="@+id/action_to_rentItem"
+        app:destination="@id/rentFragment" />
+    <action
+        android:id="@+id/action_to_returnItem"
+        app:destination="@id/returnFragment" />
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.solitawarehouse.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_loansFragment"
-            app:destination="@id/loansFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/loansFragment"
         android:name="com.example.solitawarehouse.LoansFragment"
         android:label="fragment_loans"
         tools:layout="@layout/fragment_loans" />
+    <fragment
+        android:id="@+id/rentFragment"
+        android:name="com.example.solitawarehouse.RentFragment"
+        android:label="fragment_rent"
+        tools:layout="@layout/fragment_rent" />
+    <fragment
+        android:id="@+id/returnFragment"
+        android:name="com.example.solitawarehouse.ReturnFragment"
+        android:label="fragment_return"
+        tools:layout="@layout/fragment_return" />
 
 </navigation>

@@ -77,7 +77,7 @@ class LoginFragment : Fragment() {
 
         loginButton.setOnClickListener(object: View.OnClickListener {
             override fun onClick(p0: View?) {
-                Log.i("", "Button clicked")
+                findNavController().navigate(R.id.action_to_loansFragment)
             }
 
         })
