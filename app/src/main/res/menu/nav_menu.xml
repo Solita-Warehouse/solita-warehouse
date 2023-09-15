@@ -21,5 +21,9 @@
         android:id="@+id/nav_reports"
         android:icon="@drawable/baseline_library_books_24"
         android:title="Reports"/>
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/baseline_logout_24"
+        android:title="Logout"/>
 
 </menu>

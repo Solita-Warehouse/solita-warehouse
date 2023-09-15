@@ -13,6 +13,15 @@
     <action
         android:id="@+id/action_to_returnItem"
         app:destination="@id/returnFragment" />
+    <action
+        android:id="@+id/action_to_itemAvailability"
+        app:destination="@id/availabilityFragment" />
+    <action
+        android:id="@+id/action_to_reports"
+        app:destination="@id/reportsFragment" />
+    <action
+        android:id="@+id/action_to_login"
+        app:destination="@id/loginFragment" />
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.solitawarehouse.LoginFragment"
@@ -35,5 +44,15 @@
         android:name="com.example.solitawarehouse.ReturnFragment"
         android:label="fragment_return"
         tools:layout="@layout/fragment_return" />
+    <fragment
+        android:id="@+id/availabilityFragment"
+        android:name="com.example.solitawarehouse.AvailabilityFragment"
+        android:label="fragment_availability"
+        tools:layout="@layout/fragment_availability" />
+    <fragment
+        android:id="@+id/reportsFragment"
+        android:name="com.example.solitawarehouse.ReportsFragment"
+        android:label="fragment_reports"
+        tools:layout="@layout/fragment_reports" />
 
 </navigation>

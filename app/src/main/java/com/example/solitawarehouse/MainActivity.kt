@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var drawerLayout : DrawerLayout
     lateinit var navController : NavController
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         val navView : NavigationView = findViewById(R.id.nav_view)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-
 
         // Get the NavController from the NavHostFragment
         navController = navHostFragment.navController
@@ -52,23 +50,30 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
                 R.id.nav_loans -> replaceFragment(R.id.action_to_loansFragment, it.title.toString())
                 R.id.nav_rentitem -> replaceFragment(R.id.action_to_rentItem, it.title.toString())
-
+                R.id.nav_returnitem -> replaceFragment(R.id.action_to_returnItem, it.title.toString())
+                R.id.nav_itemavailability -> replaceFragment(R.id.action_to_itemAvailability, it.title.toString())
+                R.id.nav_reports -> replaceFragment(R.id.action_to_reports, it.title.toString())
+                R.id.nav_logout -> logOut(R.id.action_to_login)
             }; true
         }
 
     }
 
-    private fun replaceFragment(fragment : Int, title: String) {
-        //val fragmentManager = supportFragmentManager
-        //val fragmentTransaction = fragmentManager.beginTransaction()
-        //fragmentTransaction.replace(R.id.frameLayout, fragment)
-        //fragmentTransaction.commit()
+    private fun replaceFragment(fragment: Int, title: String) {
         navController.navigate(fragment)
-
         drawerLayout.closeDrawers()
-        //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        //setTitle(title)
+
+        setTitle(title)
     }
+
+    private fun logOut(fragment: Int) {
+        Log.i("","Logged out")
+        navController.navigate(fragment)
+        drawerLayout.closeDrawers()
+
+        setTitle("Login")
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
