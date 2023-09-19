@@ -29,7 +29,7 @@
         android:height="48dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:hint="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainTitle" />
@@ -44,7 +44,7 @@
         android:height="48dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Department"
+        android:hint="Department"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fullName" />
@@ -59,7 +59,7 @@
         android:height="48dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:text="E-mail"
+        android:hint="E-mail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/department" />
