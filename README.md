@@ -1,6 +1,5 @@
 <div id="top"></div>
-<h2>Branch for testing XmlRpc connection, do not merge in main. See link below for explanation</h2>
-<a href="https://www.notion.so/gianad/XmlRpc-in-Android-3a303291faa34cf1ab1de5afdef8f03f?pvs=4">Changes made in the project</a>
+
 
 
 <!-- PROJECT LOGO -->
@@ -8,7 +7,8 @@
 <div align="center">
   
 <h1 align="center">Solita-warehouse</h1>
-
+<h2>Branch for testing XmlRpc connection, do not merge in main. See link below for explanation</h2>
+<a href="https://www.notion.so/gianad/XmlRpc-in-Android-3a303291faa34cf1ab1de5afdef8f03f?pvs=4">Changes made in the project</a>
 <h3 align="center">
     This project was created on the courses Softala-projekti / Multidisciplinary Software Project<br />
 <br />
