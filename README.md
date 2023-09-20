@@ -1,4 +1,7 @@
 <div id="top"></div>
+<h2>Branch for testing XmlRpc connection, do not merge in main. See link below for explanation</h2>
+<a href="https://www.notion.so/gianad/XmlRpc-in-Android-3a303291faa34cf1ab1de5afdef8f03f?pvs=4">Changes made in the project</a>
+
 
 <!-- PROJECT LOGO -->
 <br />
