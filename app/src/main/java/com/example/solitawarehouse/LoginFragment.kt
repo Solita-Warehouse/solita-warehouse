@@ -149,7 +149,7 @@ class LoginFragment : Fragment() {
 
                 /**
                  * SEARCH - Returning the ID for all the entry of a table that fits search parameters
-                 */
+                 *///
                 println("### SEARCH - All partner whose name start with D ###")
 
                 val partnerNameStartWithID =  models.execute(
