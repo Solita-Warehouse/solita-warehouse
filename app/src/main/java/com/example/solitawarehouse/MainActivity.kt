@@ -1,25 +1,18 @@
 package com.example.solitawarehouse
 
+import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.navigation.NavigationView
-import model.User
-import androidx.navigation.fragment.findNavController
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle : ActionBarDrawerToggle
@@ -29,6 +22,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //TEST for XmlRpc
+        val SDK_INT = Build.VERSION.SDK_INT
+        if (SDK_INT > 8) {
+            val policy = ThreadPolicy.Builder()
+                .permitAll().build()
+            StrictMode.setThreadPolicy(policy)
+            //your codes here
+        }
 
         drawerLayout = findViewById(R.id.drawerLayout)
         val navView : NavigationView = findViewById(R.id.nav_view)

@@ -44,7 +44,7 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/DEPENDENCIES"
         }
     }
 }
@@ -87,4 +87,8 @@ dependencies {
 
     // Jetpack Compose Integration
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    // XMLRPC
+    // https://mvnrepository.com/artifact/org.apache.xmlrpc/xmlrpc-client
+    implementation("org.apache.xmlrpc:xmlrpc-client:3.1.3")
 }
