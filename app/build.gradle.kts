@@ -44,7 +44,8 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/DEPENDENCIES"
+            //was previously: excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 }
@@ -61,6 +62,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("org.apache.xmlrpc:xmlrpc-client:3.1.3")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -1,6 +1,8 @@
 package com.example.solitawarehouse
 
+import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -29,6 +31,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //TEST for XmlRpc
+        val SDK_INT = Build.VERSION.SDK_INT
+        if (SDK_INT > 8) {
+            val policy = StrictMode.ThreadPolicy.Builder()
+                .permitAll().build()
+            StrictMode.setThreadPolicy(policy)
+        }
 
         drawerLayout = findViewById(R.id.drawerLayout)
         val navView : NavigationView = findViewById(R.id.nav_view)
