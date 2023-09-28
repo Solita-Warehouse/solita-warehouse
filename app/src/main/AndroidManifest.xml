@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.solita_warehouse.MainActivity"
             android:exported="true"
             android:label="solita_warehouse"
             android:theme="@style/Theme.AppCompat.Light">
