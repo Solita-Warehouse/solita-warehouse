@@ -4,11 +4,11 @@
     <item
         android:id="@+id/nav_loans"
         android:icon="@drawable/baseline_construction_24"
-        android:title="Own loans"/>
+        android:title="Own loans" />
     <item
         android:id="@+id/nav_rentitem"
         android:icon="@drawable/baseline_shopping_cart_checkout_24"
-        android:title="Rent item"/>
+        android:title="Rent item" />
     <item
         android:id="@+id/nav_returnitem"
         android:icon="@drawable/baseline_double_arrow_24"

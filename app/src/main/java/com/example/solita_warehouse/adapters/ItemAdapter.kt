@@ -10,17 +10,16 @@ import model.Item
 
 
 class ItemAdapter (private val mItems: List<Item>) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Your holder should contain and initialize a member variable
         // for any view that will be set as you render a row
-        val nameTextItem = itemView.findViewById<TextView>(R.id.itemName)
-        val returnTextDate = itemView.findViewById<TextView>(R.id.returnDate)
+        val nameTextItem = itemView.findViewById<TextView>(R.id.itemNameTitle)
+        val returnTextDate = itemView.findViewById<TextView>(R.id.returnDateTitle)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-
         val itemView = inflater.inflate(R.layout.item_list, parent, false)
 
         return ViewHolder(itemView)
@@ -37,4 +36,5 @@ class ItemAdapter (private val mItems: List<Item>) : RecyclerView.Adapter<ItemAd
     override fun getItemCount(): Int {
         return mItems.size
     }
+
 }
