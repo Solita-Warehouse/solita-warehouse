@@ -42,7 +42,6 @@ class ReportsFragment : Fragment() {
         var inputEmail = ""
 
         val user = User("Jukka", "Boss", "jukka@jukka.com")
-        val emptyUser = User("", "", "")
 
         userView.setUser(user)
 
@@ -103,7 +102,6 @@ class ReportsFragment : Fragment() {
             val newUser = User(inputName, inputDepartment, inputEmail)
             userView.setUser(newUser)
         }
-
         return rootView
     }
 

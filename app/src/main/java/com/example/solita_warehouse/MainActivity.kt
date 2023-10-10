@@ -54,8 +54,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        //Testing main
-
         // If initialization is successful, create a sample matrix
         val mat = Mat(3, 3, CvType.CV_8UC1)
         Core.randn(mat, 0.0, 1.0)
@@ -67,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("Test_OpenCV",mat.dump())
 
         navView.setNavigationItemSelectedListener {
-
             when(it.itemId) {
                 R.id.nav_loans -> replaceFragment(R.id.action_to_loansFragment, it.title.toString())
                 R.id.nav_rentitem -> replaceFragment(R.id.action_to_rentItem, it.title.toString())
