@@ -16,15 +16,20 @@ class AuthenticationService(private val baseUrl: String) {
 
     fun authenticate(db: String, username: String, password: String): Any? {
         val client = XmlRpcClient()
-        val auth = client.execute(commonConfig, "authenticate", listOf(db, username, password,
-            emptyMap<String,Any>()))
+        try {
+            val auth = client.execute(commonConfig, "authenticate", listOf(db, username, password,
+                emptyMap<String,Any>()))
 
-        if (auth is Int) {
-            Log.i("odoo", "User auth id: $auth")
-        } else {
-            Log.i("odoo", "Authentication failed: $auth")
+            if (auth is Int) {
+                Log.i("odoo", "User auth id: $auth")
+            } else {
+                Log.i("odoo", "Authentication failed: $auth")
+            }
+            return auth
+        } catch (e: Exception) {
+            Log.i("odoo","Error: ${e.message}")
+            return -1
         }
-        return auth
     }
 
 }

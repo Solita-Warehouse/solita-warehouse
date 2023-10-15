@@ -32,6 +32,8 @@ class LoginFragment : Fragment() {
 
     }
 
+    //test comment, delete later
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +48,10 @@ class LoginFragment : Fragment() {
         var inputFullName = ""
         var inputDepartment = ""
         var inputEmail = ""
+        val url = "http://10.0.2.2:8069" //=> URL to call localhost from the emulator
+        val db = "db"
+        val username = "admin"
+        val password = "admin"
 
         fullName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -85,7 +91,7 @@ class LoginFragment : Fragment() {
                 Log.d("odoo", "### AUTHENTICATION ###");
                 val odooDatabaseConnection = OdooDatabaseConnection("http://10.0.2.2:8069", "db", inputFullName, inputEmail)
                 odooDatabaseConnection.authenticate()
-                odooDatabaseConnection.returnUserData()
+                //odooDatabaseConnection.returnUserData()
 
             }
         })
