@@ -16,18 +16,23 @@ class OdooDatabaseConnection(private val baseUrl: String, private val db: String
         modelConfig.serverURL = URL("http://10.0.2.2:8069/xmlrpc/2/object")
     }
 
-    fun authenticate(): Int {
+    fun authenticate(): Any? {
         return authService.authenticate(db, username, password)
     }
 
     fun returnUserData(): String {
+        val auth = authenticate()
+        if (auth is Boolean) {
+            Log.i("odoo", "returnUserData func cannot be ran!")
+            return ""
+        }
         val userInformation = client.execute(
             modelConfig,
             "execute_kw",
             listOf(
-                db, authenticate(), password, // Use the authenticate method to get the user ID
+                db, auth, password, // Use the authenticate method to get the user ID
                 "res.users", "read",
-                listOf(authenticate()), // Pass the user's uid to read their information
+                listOf(auth), // Pass the user's uid to read their information
                 mapOf("fields" to listOf("login")) // Specify the fields you want to retrieve, in this case, the "login" field
             )
         ) as Array<*>

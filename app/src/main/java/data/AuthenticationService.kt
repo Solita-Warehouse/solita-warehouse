@@ -1,6 +1,7 @@
 package data
 
 import android.util.Log
+import org.apache.xmlrpc.XmlRpcException
 import org.apache.xmlrpc.client.XmlRpcClient
 import org.apache.xmlrpc.client.XmlRpcClientConfig
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
@@ -13,12 +14,17 @@ class AuthenticationService(private val baseUrl: String) {
         commonConfig.serverURL = URL("$baseUrl/xmlrpc/2/common")
     }
 
-    fun authenticate(db: String, username: String, password: String): Int{
+    fun authenticate(db: String, username: String, password: String): Any? {
         val client = XmlRpcClient()
         val auth = client.execute(commonConfig, "authenticate", listOf(db, username, password,
-            emptyMap<String,Any>())) as Int
-        Log.i("odoo","$auth")
-        return auth
+            emptyMap<String,Any>()))
 
+        if (auth is Int) {
+            Log.i("odoo", "User auth id: $auth")
+        } else {
+            Log.i("odoo", "Authentication failed: $auth")
+        }
+        return auth
     }
+
 }
