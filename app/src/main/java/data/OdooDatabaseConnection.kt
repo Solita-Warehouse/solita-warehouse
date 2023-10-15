@@ -9,6 +9,7 @@ class OdooDatabaseConnection(private val baseUrl: String, private val db: String
     private val client = XmlRpcClient()
     private val commonConfig = XmlRpcClientConfigImpl()
     private val modelConfig = XmlRpcClientConfigImpl()
+    private val authService = AuthenticationService(baseUrl)
 
     init {
         commonConfig.serverURL = URL("http://10.0.2.2:8069/xmlrpc/2/common")
@@ -16,9 +17,7 @@ class OdooDatabaseConnection(private val baseUrl: String, private val db: String
     }
 
     fun authenticate(): Int {
-        val auth = client.execute(commonConfig, "authenticate", listOf(db, username, password, emptyMap<String, Any>())) as Int
-        Log.i("odoo", "$auth")
-        return auth
+        return authService.authenticate(db, username, password)
     }
 
     fun returnUserData(): String {
