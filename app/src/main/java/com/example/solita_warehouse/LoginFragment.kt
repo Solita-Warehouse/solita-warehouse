@@ -11,13 +11,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.fragment.findNavController
 import com.example.solita_warehouse.R
 import data.OdooDatabaseConnection
-import org.apache.xmlrpc.client.XmlRpcClient
-import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
-import java.net.URL
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
     private lateinit var mainTitle : TextView
@@ -31,8 +29,6 @@ class LoginFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
-
-    //test comment, delete later
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +44,6 @@ class LoginFragment : Fragment() {
         var inputFullName = ""
         var inputDepartment = ""
         var inputEmail = ""
-        val url = "http://10.0.2.2:8069" //=> URL to call localhost from the emulator
-        val db = "db"
-        val username = "admin"
-        val password = "admin"
 
         fullName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -89,10 +81,12 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener(object: View.OnClickListener {
             override fun onClick(p0: View?) {
                 Log.d("odoo", "### AUTHENTICATION ###");
-                val odooDatabaseConnection = OdooDatabaseConnection("http://10.0.2.2:8069", "db", inputFullName, inputEmail)
-                odooDatabaseConnection.authenticate()
-                //odooDatabaseConnection.returnUserData()
 
+                CoroutineScope(Dispatchers.Main).launch {
+                    val odooDatabaseConnection = OdooDatabaseConnection("http://10.0.2.2:8069", "db", inputFullName, inputEmail)
+                    val authResult = odooDatabaseConnection.authenticate()
+                    val returnData = odooDatabaseConnection.returnUserData()
+                }
             }
         })
 

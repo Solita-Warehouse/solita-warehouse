@@ -1,9 +1,7 @@
 package data
 
 import android.util.Log
-import org.apache.xmlrpc.XmlRpcException
 import org.apache.xmlrpc.client.XmlRpcClient
-import org.apache.xmlrpc.client.XmlRpcClientConfig
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 import java.net.URL
 

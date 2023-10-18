@@ -4,6 +4,8 @@ import android.util.Log
 import org.apache.xmlrpc.client.XmlRpcClient
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 import java.net.URL
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class OdooDatabaseConnection(private val baseUrl: String, private val db: String, private val username: String, private val password: String) {
     private val client = XmlRpcClient()
@@ -16,15 +18,15 @@ class OdooDatabaseConnection(private val baseUrl: String, private val db: String
         modelConfig.serverURL = URL("http://10.0.2.2:8069/xmlrpc/2/object")
     }
 
-    fun authenticate(): Any? {
-        return authService.authenticate(db, username, password)
+    suspend fun authenticate(): Any? = withContext(Dispatchers.IO) {
+        authService.authenticate(db, username, password)
     }
 
-    fun returnUserData(): String {
+    suspend fun returnUserData(): String = withContext(Dispatchers.IO) {
         val auth = authenticate()
         if (auth is Boolean) {
             Log.i("odoo", "returnUserData func cannot be ran!")
-            return ""
+            return@withContext ""
         }
         val userInformation = client.execute(
             modelConfig,
@@ -40,7 +42,7 @@ class OdooDatabaseConnection(private val baseUrl: String, private val db: String
         // Extract the username from the user information
         val userName = userInformation[0]
         Log.i("odoo", "Username: $userName")
-        return "$userName"
+        return@withContext "$userName"
     }
 
 }
