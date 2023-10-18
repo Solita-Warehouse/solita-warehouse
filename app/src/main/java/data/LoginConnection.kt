@@ -7,15 +7,13 @@ import java.net.URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class OdooDatabaseConnection(private val baseUrl: String, private val db: String, private val username: String, private val password: String) {
+class LoginConnection(private val baseUrl: String, private val db: String, private val username: String, private val password: String) {
     private val client = XmlRpcClient()
-    private val commonConfig = XmlRpcClientConfigImpl()
     private val modelConfig = XmlRpcClientConfigImpl()
     private val authService = AuthenticationService(baseUrl)
 
     init {
-        commonConfig.serverURL = URL("http://10.0.2.2:8069/xmlrpc/2/common")
-        modelConfig.serverURL = URL("http://10.0.2.2:8069/xmlrpc/2/object")
+        modelConfig.serverURL = URL("$baseUrl/xmlrpc/2/object")
     }
 
     suspend fun authenticate(): Any? = withContext(Dispatchers.IO) {

@@ -12,7 +12,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.solita_warehouse.R
-import data.OdooDatabaseConnection
+import data.ItemConnection
+import data.LoginConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -78,17 +79,14 @@ class LoginFragment : Fragment() {
 
         })
 
-        loginButton.setOnClickListener(object: View.OnClickListener {
-            override fun onClick(p0: View?) {
-                Log.d("odoo", "### AUTHENTICATION ###");
-
-                CoroutineScope(Dispatchers.Main).launch {
-                    val odooDatabaseConnection = OdooDatabaseConnection("http://10.0.2.2:8069", "db", inputFullName, inputEmail)
-                    val authResult = odooDatabaseConnection.authenticate()
-                    val returnData = odooDatabaseConnection.returnUserData()
-                }
+        loginButton.setOnClickListener {
+            Log.d("odoo", "### AUTHENTICATION ###");
+            CoroutineScope(Dispatchers.Main).launch {
+                val loginConnection = LoginConnection("http://10.0.2.2:8069", "db", inputFullName, inputEmail)
+                val authResult = loginConnection.authenticate()
+                val returnData = loginConnection.returnUserData()
             }
-        })
+        }
 
         return rootView
     }
