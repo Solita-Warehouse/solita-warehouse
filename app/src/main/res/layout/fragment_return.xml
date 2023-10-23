@@ -16,15 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <!-- Add other UI elements here if needed -->
-        <Button
-            android:id="@+id/switch_camera_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Switch Camera"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+
         <Button
             android:id="@+id/capture_button"
             android:layout_width="wrap_content"
