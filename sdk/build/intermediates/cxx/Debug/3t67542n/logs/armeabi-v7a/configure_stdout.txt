@@ -12,4 +12,4 @@
 -- Detecting CXX compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: C:/Users/Elias Isopahkala/AndroidStudioProjects/solita-warehouse/sdk/.cxx/Debug/3t67542n/x86_64
+-- Build files have been written to: C:/Users/Elias Isopahkala/AndroidStudioProjects/solita-warehouse/sdk/.cxx/Debug/3t67542n/armeabi-v7a

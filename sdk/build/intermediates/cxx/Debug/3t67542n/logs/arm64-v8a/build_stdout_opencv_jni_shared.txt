@@ -1,2 +1,2 @@
-ninja: Entering directory `C:\Ohjelmia\solita-warehouse\sdk\.cxx\Debug\3t67542n\arm64-v8a'
+ninja: Entering directory `C:\Users\Elias Isopahkala\AndroidStudioProjects\solita-warehouse\sdk\.cxx\Debug\3t67542n\arm64-v8a'
 ninja: no work to do.
