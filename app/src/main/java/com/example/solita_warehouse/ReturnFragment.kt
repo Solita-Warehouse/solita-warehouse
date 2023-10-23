@@ -2,6 +2,7 @@ package com.example.solitawarehouse
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -17,11 +18,18 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.example.solita_warehouse.R
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 import androidx.core.net.toUri
 import androidx.camera.core.ImageCaptureException
+import org.opencv.android.Utils
+import org.opencv.core.Core
+import org.opencv.core.Mat
+import org.opencv.core.Scalar
+import org.opencv.imgcodecs.Imgcodecs
+import org.opencv.imgproc.Imgproc
 
 
 class ReturnFragment : Fragment(R.layout.fragment_return) {
@@ -31,52 +39,42 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
     private lateinit var cameraSelector: CameraSelector
     private lateinit var imageCapture: ImageCapture
     private var isFrontCameraActive = false
-
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            startCameraWithPermissionCheck()
+        } else {
+            // Handle the situation if the permissions are not granted
+            // You can show a message or take appropriate action here
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         previewView = view.findViewById(R.id.preview_view)
 
-        if (allPermissionsGranted()) {
-            startCamera()
-        } else {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
-            )
-        }
+        startCameraWithPermissionCheck()
 
-        // Initialize CameraSelector to use the back camera by default
-        cameraSelector = CameraSelector.Builder()
-            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-            .build()
-
-        // Find the switch camera button
-        val switchCameraButton = view.findViewById<Button>(R.id.switch_camera_button)
-
-        switchCameraButton.setOnClickListener {
-            // Toggle between front and back cameras
-            isFrontCameraActive = !isFrontCameraActive
-            if (isFrontCameraActive) {
-                cameraSelector = CameraSelector.Builder()
-                    .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                    .build()
-            } else {
-                cameraSelector = CameraSelector.Builder()
-                    .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                    .build()
-            }
-
-            // Rebind the camera with the new camera selector
-            bindCameraUseCases()
-        }
 
         // Find the capture button
         val captureButton = view.findViewById<Button>(R.id.capture_button)
 
         captureButton.setOnClickListener {
             takePhoto()
+        }
+    }
+    private fun startCameraWithPermissionCheck() {
+        if (allPermissionsGranted()) {
+            startCamera()
+            // Initialize CameraSelector to use the back camera by default
+            cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build()
+
+            bindCameraUseCases()
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
@@ -159,6 +157,7 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
             }
         )
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
