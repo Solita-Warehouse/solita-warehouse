@@ -19,12 +19,13 @@ class AuthenticationService(private val baseUrl: String) {
                 emptyMap<String,Any>()))
 
             if (auth is Int) {
-                Log.i("odoo", "User auth id: $auth")
+                //Log.i("odoo", "User auth id: $auth")
             } else {
                 Log.i("odoo", "Authentication failed: $auth")
             }
             return auth
         } catch (e: Exception) {
+            Log.i("error", e.printStackTrace().toString())
             Log.i("odoo","Error: ${e.message}")
             return -1
         }
