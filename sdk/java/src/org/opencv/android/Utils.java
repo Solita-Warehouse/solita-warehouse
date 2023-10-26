@@ -2,7 +2,11 @@ package org.opencv.android;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.opencv.core.CvException;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -136,4 +140,30 @@ public class Utils {
     private static native void nBitmapToMat2(Bitmap b, long m_addr, boolean unPremultiplyAlpha);
 
     private static native void nMatToBitmap2(long m_addr, Bitmap b, boolean premultiplyAlpha);
+
+    public static Bitmap getBitmapFromAsset(Context context, String filePath) {
+        try {
+            InputStream stream = context.getAssets().open(filePath);
+            return BitmapFactory.decodeStream(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    // Add a method to get a Bitmap from a Uri
+    public static Bitmap getBitmapFromUri(Uri uri, Context context) {
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            return BitmapFactory.decodeStream(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Mat bitmapToMat(Bitmap bitmap) {
+        Mat mat = new Mat();
+        Utils.bitmapToMat(bitmap, mat);
+        return mat;
+    }
 }

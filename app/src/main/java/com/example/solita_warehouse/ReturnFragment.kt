@@ -2,34 +2,29 @@ package com.example.solitawarehouse
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
-import com.google.common.util.concurrent.ListenableFuture
-import com.example.solita_warehouse.R
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import com.example.solita_warehouse.ImageComparator
+import com.example.solita_warehouse.R
+import com.google.common.util.concurrent.ListenableFuture
+import org.opencv.android.Utils
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
-import androidx.core.net.toUri
-import androidx.camera.core.ImageCaptureException
-import org.opencv.android.Utils
-import org.opencv.core.Core
-import org.opencv.core.Mat
-import org.opencv.core.Scalar
-import org.opencv.imgcodecs.Imgcodecs
-import org.opencv.imgproc.Imgproc
 
 
 class ReturnFragment : Fragment(R.layout.fragment_return) {
@@ -39,6 +34,8 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
     private lateinit var cameraSelector: CameraSelector
     private lateinit var imageCapture: ImageCapture
     private var isFrontCameraActive = false
+    private lateinit var imageComparator: ImageComparator
+    private lateinit var savedUri: Uri
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -56,12 +53,15 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
 
         startCameraWithPermissionCheck()
 
+        // Initialize the image comparator with the application context
+        imageComparator = ImageComparator(requireContext())
 
         // Find the capture button
         val captureButton = view.findViewById<Button>(R.id.capture_button)
 
         captureButton.setOnClickListener {
             takePhoto()
+
         }
     }
     private fun startCameraWithPermissionCheck() {
@@ -146,8 +146,14 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
             ContextCompat.getMainExecutor(requireContext()),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    val savedUri = outputFileResults.savedUri ?: photoFile.toUri()
+                    val savedUri = outputFileResults.savedUri ?: Uri.fromFile(photoFile)
                     showToast("Photo saved: $savedUri")
+
+                    val resImage = Utils.bitmapToMat(Utils.getBitmapFromAsset(requireContext(), "IMG20231004142955.jpg"))
+                    val capturedImage = Utils.bitmapToMat(Utils.getBitmapFromUri(savedUri, requireContext()))
+                    val result = imageComparator.compareImages(capturedImage, resImage)
+                    // Do something with the comparison result
+                    println(result)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
