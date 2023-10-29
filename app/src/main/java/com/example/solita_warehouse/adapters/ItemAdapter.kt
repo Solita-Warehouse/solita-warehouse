@@ -9,7 +9,7 @@ import com.example.solita_warehouse.R
 import model.Item
 
 
-class ItemAdapter (private val mItems: List<Item>) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
+class ItemAdapter(private val mItems: List<Item>) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Your holder should contain and initialize a member variable
         // for any view that will be set as you render a row

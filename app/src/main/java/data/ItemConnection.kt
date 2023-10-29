@@ -3,6 +3,7 @@ package data
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import model.Item
 import org.apache.xmlrpc.client.XmlRpcClient
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 import java.net.URL
@@ -12,6 +13,8 @@ class ItemConnection(private val baseUrl: String, private val db: String, privat
     private val modelConfig = XmlRpcClientConfigImpl()
     private val authService = AuthenticationService(baseUrl)
 
+    private val itemList = mutableListOf<Item>()
+
     init {
         modelConfig.serverURL = URL("$baseUrl/xmlrpc/2/object")
     }
@@ -20,32 +23,38 @@ class ItemConnection(private val baseUrl: String, private val db: String, privat
         authService.authenticate("db", "admin", "admin")
     }
 
-    suspend fun returnItems(): Any? = withContext(Dispatchers.IO) {
+    suspend fun returnItems(): MutableList<Item> = withContext(Dispatchers.IO) {
         val auth = authenticate()
         if (auth is Boolean) {
             Log.i("odoo", "returnItems func cannot be ran!")
-            return@withContext ""
+            return@withContext mutableListOf()
         }
         val itemsList = client.execute(
             modelConfig,
             "execute_kw",
             listOf(
                 db, auth, password,
-                "product.product", "read",
-                listOf(arrayOf(45,46)),
+                "product.product", "search_read",
+                listOf(emptyList<Any>()),
                 mapOf("fields" to listOf("name", "lst_price"))
             )
         ) as Array<*>
 
         if (itemsList.isNotEmpty()) {
             for (item in itemsList) {
-                Log.i("odoo", item.toString())
+                // Ensure item is a Map (dictionary)
+                if (item is Map<*, *>) {
+                    val name = item["name"]
+                    val lstPrice = item["lst_price"]
+                    val newItem = Item(name.toString(), lstPrice.toString())
+                    itemList.add(newItem)
+                }
             }
         } else {
             Log.i("odoo", "No items found.")
         }
 
-        return@withContext itemsList
+        return@withContext itemList
     }
 
 }

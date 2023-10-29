@@ -7,67 +7,15 @@
     tools:context=".LoansFragment">
 
     <TextView
-        android:id="@+id/loansTitle"
+        android:id="@+id/textViewRent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="175dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="178dp"
-        android:text="Own Loans"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_marginStart="176dp"
+        android:layout_marginTop="204dp"
+        android:layout_marginEnd="177dp"
+        android:text="Loans"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvItems"
-        android:layout_width="413dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="1dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loansTitle"
-        app:layout_constraintVertical_bias="0.0"
-        app:spanCount="4" />
-
-    <TextView
-        android:id="@+id/itemNamePlaceholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="85dp"
-        android:layout_marginTop="25dp"
-        android:text="Item Name"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loansTitle" />
-
-    <TextView
-        android:id="@+id/returnDatePlaceholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="85dp"
-        android:text="Return date"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loansTitle" />
-
-    <Button
-        android:id="@+id/itemButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="160dp"
-        android:text="Print items"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvItems" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
