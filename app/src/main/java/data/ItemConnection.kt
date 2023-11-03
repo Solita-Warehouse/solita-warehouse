@@ -19,12 +19,8 @@ class ItemConnection(private val baseUrl: String, private val db: String, privat
         modelConfig.serverURL = URL("$baseUrl/xmlrpc/2/object")
     }
 
-    suspend fun authenticate(): Any? = withContext(Dispatchers.IO) {
-        authService.authenticate("db", "admin", "admin")
-    }
-
     suspend fun returnItems(): MutableList<Item> = withContext(Dispatchers.IO) {
-        val auth = authenticate()
+        val auth = authService.authenticate("db", "admin", "admin")
         if (auth is Boolean) {
             Log.i("odoo", "returnItems func cannot be ran!")
             return@withContext mutableListOf()

@@ -16,12 +16,8 @@ class LoginConnection(private val baseUrl: String, private val db: String, priva
         modelConfig.serverURL = URL("$baseUrl/xmlrpc/2/object")
     }
 
-    suspend fun authenticate(): Any? = withContext(Dispatchers.IO) {
-        authService.authenticate(db, username, password)
-    }
-
     suspend fun returnUserData(): String = withContext(Dispatchers.IO) {
-        val auth = authenticate()
+        val auth = authService.authenticate(db, username, password)
         if (auth is Boolean) {
             Log.i("odoo", "returnUserData func cannot be ran!")
             return@withContext ""
