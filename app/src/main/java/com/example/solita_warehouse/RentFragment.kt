@@ -15,6 +15,7 @@ import data.ItemConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import io.github.cdimascio.dotenv.dotenv
 
 class RentFragment : Fragment() {
     private lateinit var itemButton : Button
@@ -28,7 +29,7 @@ class RentFragment : Fragment() {
 
         itemButton.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                val itemConnection =  ItemConnection("http://10.0.2.2:8069", "db", "admin", "admin")
+                val itemConnection =  ItemConnection()
                 val returnItems = itemConnection.returnItems()
 
                 Log.i("odoo", returnItems.toString())

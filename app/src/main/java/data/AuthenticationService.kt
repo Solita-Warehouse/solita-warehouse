@@ -7,19 +7,19 @@ import java.net.URL
 
 class AuthenticationService(private val baseUrl: String) {
     private val commonConfig = XmlRpcClientConfigImpl()
+    private val client = XmlRpcClient()
 
     init{
         commonConfig.serverURL = URL("$baseUrl/xmlrpc/2/common")
     }
 
     fun authenticate(db: String, username: String, password: String): Any? {
-        val client = XmlRpcClient()
         try {
             val auth = client.execute(commonConfig, "authenticate", listOf(db, username, password,
                 emptyMap<String,Any>()))
 
             if (auth is Int) {
-                //Log.i("odoo", "User auth id: $auth")
+                Log.i("odoo", "User auth id: $auth")
             } else {
                 Log.i("odoo", "Authentication failed: $auth")
             }

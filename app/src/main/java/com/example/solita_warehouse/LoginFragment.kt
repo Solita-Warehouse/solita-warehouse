@@ -82,7 +82,7 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener {
             Log.d("odoo", "### AUTHENTICATION ###");
             CoroutineScope(Dispatchers.Main).launch {
-                val loginConnection = LoginConnection("http://10.0.2.2:8069", "db", inputFullName, inputEmail)
+                val loginConnection = LoginConnection("http://20.93.3.228:8069", "db", inputFullName, inputEmail)
                 val returnData = loginConnection.returnUserData()
             }
         }

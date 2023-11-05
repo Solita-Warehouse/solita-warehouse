@@ -17,26 +17,38 @@ class LoginConnection(private val baseUrl: String, private val db: String, priva
     }
 
     suspend fun returnUserData(): String = withContext(Dispatchers.IO) {
-        val auth = authService.authenticate(db, username, password)
-        if (auth is Boolean) {
-            Log.i("odoo", "returnUserData func cannot be ran!")
-            return@withContext ""
-        }
-        val userInformation = client.execute(
-            modelConfig,
-            "execute_kw",
-            listOf(
-                db, auth, password, // Use the authenticate method to get the user ID
-                "res.users", "read",
-                listOf(auth), // Pass the user's uid to read their information
-                mapOf("fields" to listOf("login")) // Specify the fields you want to retrieve, in this case, the "login" field
-            )
-        ) as Array<*>
+        try {
 
-        // Extract the username from the user information
-        val userName = userInformation[0]
-        Log.i("odoo", "Username: $userName")
-        return@withContext "$userName"
+            Log.i("odoo", "Calling auth method on Odoo from LoginConnection.returnUserData()")
+            val auth = authService.authenticate(db, username, password)
+            if (auth is Boolean) {
+                Log.i("odoo", "returnUserData func cannot be run!")
+                return@withContext ""
+            }
+
+
+            Log.i("odoo", "Calling get user info method on Odoo")
+            val userInformation = client.execute(
+                modelConfig,
+                "execute_kw",
+                listOf(
+                    db, 2, password,
+                    "res.users", "read",
+                    listOf(2),
+                    mapOf("fields" to listOf("login"))
+                )
+            ) as Array<*>
+
+            // Extract the username from the user information
+            val userName = userInformation[0]
+            Log.i("odoo", "Username: $userName")
+            return@withContext "$userName"
+        } catch (e: Exception) {
+            // Handle exceptions as needed
+            e.printStackTrace()
+            return@withContext "" // Return an empty string or handle the error case as appropriate
+        }
     }
+
 
 }
