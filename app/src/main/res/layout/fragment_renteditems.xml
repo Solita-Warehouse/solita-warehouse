@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RentFragment">
+    tools:context=".RentedItemsFragment">
 
     <TextView
-        android:id="@+id/loansTitle"
+        android:id="@+id/rentedItemsLoansTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="175dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="178dp"
-        android:text="Rentable items"
+        android:text="Rented items"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvItems"
+        android:id="@+id/rvRentedItems"
         android:layout_width="413dp"
         android:layout_height="350dp"
         android:layout_marginStart="1dp"
@@ -32,12 +32,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loansTitle"
+        app:layout_constraintTop_toBottomOf="@+id/rentedItemsLoansTitle"
         app:layout_constraintVertical_bias="0.0"
         app:spanCount="4" />
 
     <TextView
-        android:id="@+id/itemNamePlaceholder"
+        android:id="@+id/rentedItemsNameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
@@ -45,19 +45,19 @@
         android:text="Item Name"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loansTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/rentedItemsLoansTitle" />
 
     <Button
-        android:id="@+id/itemButton"
+        android:id="@+id/itemRentedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="160dp"
-        android:text="Print items"
+        android:text="Print rented items"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvItems" />
+        app:layout_constraintTop_toBottomOf="@+id/rvRentedItems" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

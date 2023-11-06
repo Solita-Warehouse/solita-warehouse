@@ -1,7 +1,7 @@
 package model
 
-class Item(val name: String, val returnDate: String) {
+class Item(val name: String, val id: Int) {
     override fun toString(): String {
-        return "$name $returnDate"
+        return "Item name: $name - Item id: $id"
     }
 }

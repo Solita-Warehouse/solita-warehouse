@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.solita_warehouse.R
 
 
+
 class LoansFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

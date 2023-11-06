@@ -22,12 +22,15 @@
     <action
         android:id="@+id/action_to_login"
         app:destination="@id/loginFragment" />
+    <action
+        android:id="@+id/action_to_rentedItems"
+        app:destination="@id/rentedItemsFragment" />
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.solitawarehouse.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
-
     </fragment>
     <fragment
         android:id="@+id/loansFragment"
@@ -54,5 +57,10 @@
         android:name="com.example.solitawarehouse.ReportsFragment"
         android:label="fragment_reports"
         tools:layout="@layout/fragment_reports" />
+    <fragment
+        android:id="@+id/rentedItemsFragment"
+        android:name="com.example.solita_warehouse.RentedItemsFragment"
+        android:label="fragment_renteditems"
+        tools:layout="@layout/fragment_renteditems" />
 
 </navigation>

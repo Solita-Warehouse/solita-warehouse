@@ -18,16 +18,12 @@ class LoginConnection(private val baseUrl: String, private val db: String, priva
 
     suspend fun returnUserData(): String = withContext(Dispatchers.IO) {
         try {
-
-            Log.i("odoo", "Calling auth method on Odoo from LoginConnection.returnUserData()")
             val auth = authService.authenticate(db, username, password)
             if (auth is Boolean) {
                 Log.i("odoo", "returnUserData func cannot be run!")
                 return@withContext ""
             }
 
-
-            Log.i("odoo", "Calling get user info method on Odoo")
             val userInformation = client.execute(
                 modelConfig,
                 "execute_kw",
@@ -45,7 +41,7 @@ class LoginConnection(private val baseUrl: String, private val db: String, priva
             return@withContext "$userName"
         } catch (e: Exception) {
             // Handle exceptions as needed
-            e.printStackTrace()
+            Log.i("odoo", "Error in LoginConnection class: ${e.printStackTrace()}")
             return@withContext "" // Return an empty string or handle the error case as appropriate
         }
     }

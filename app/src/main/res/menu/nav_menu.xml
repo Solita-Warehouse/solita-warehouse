@@ -10,6 +10,10 @@
         android:icon="@drawable/baseline_shopping_cart_checkout_24"
         android:title="Rent item" />
     <item
+        android:id="@+id/nav_renteditems"
+        android:icon="@drawable/baseline_checklist_24"
+        android:title="Rented items"/>
+    <item
         android:id="@+id/nav_returnitem"
         android:icon="@drawable/baseline_double_arrow_24"
         android:title="Return item"/>
@@ -25,5 +29,4 @@
         android:id="@+id/nav_logout"
         android:icon="@drawable/baseline_logout_24"
         android:title="Logout"/>
-
 </menu>

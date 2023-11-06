@@ -26,7 +26,7 @@ class AuthenticationService(private val baseUrl: String) {
             return auth
         } catch (e: Exception) {
             Log.i("error", e.printStackTrace().toString())
-            Log.i("odoo","Error: ${e.message}")
+            Log.i("odoo","Error in AuthenticationService class: ${e.message}")
             return -1
         }
     }

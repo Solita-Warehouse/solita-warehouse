@@ -1,7 +1,6 @@
 package data
 
 import android.util.Log
-import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import model.Item
@@ -9,28 +8,23 @@ import org.apache.xmlrpc.client.XmlRpcClient
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 import java.io.EOFException
 import java.net.URL
+import model.EnvVariableLoader
 
 class ItemConnection() {
     private val client = XmlRpcClient()
     private val modelConfig = XmlRpcClientConfigImpl()
     private val itemList = mutableListOf<Item>()
-    val dotenv = dotenv {
-        directory = "/assets"
-        filename = "env" // instead of 'env', use 'env'
-    }
-    // Access environment variables
-    val URL = dotenv["URL"]
-    val DB = dotenv["DB"]
-    val PASSWORD = dotenv["PASSWORD"]
-    val USERNAME = dotenv["USERNAME"]
-
+    val DB = EnvVariableLoader.DB
+    val PASSWORD = EnvVariableLoader.PASSWORD
+    val LOCAL_PASSWORD = EnvVariableLoader.PASSWORD_LOCAL
+    val URL = EnvVariableLoader.URL
 
     init {
-        modelConfig.serverURL = URL("$URL/xmlrpc/2/object")
+        modelConfig.serverURL = URL("${URL}/xmlrpc/2/object")
     }
 
     suspend fun returnItems(): MutableList<Item> = withContext(Dispatchers.IO) {
-        var itemsList : Array<*>;
+        val itemsList : Array<*>;
         try {
              itemsList = client.execute(
                 modelConfig,
@@ -39,7 +33,7 @@ class ItemConnection() {
                     DB, 2, PASSWORD,
                     "product.product", "search_read",
                     listOf(emptyList<Any>()),
-                    mapOf("fields" to listOf("name", "lst_price"))
+                    mapOf("fields" to listOf("name", "id"))
                 )
             ) as Array<*>
 
@@ -48,9 +42,12 @@ class ItemConnection() {
                     // Ensure item is a Map (dictionary)
                     if (item is Map<*, *>) {
                         val name = item["name"]
-                        val lstPrice = item["lst_price"]
-                        val newItem = Item(name.toString(), lstPrice.toString())
-                        itemList.add(newItem)
+                        val id = item["id"]
+                        if (id is Int) {
+                            val newItem = Item(name.toString(), id)
+                            itemList.add(newItem)
+                        }
+
                     }
                 }
             } else {
@@ -61,13 +58,13 @@ class ItemConnection() {
 
         } catch (e: EOFException) {
             // Handle unexpected end of stream exception
-            e.printStackTrace()
+            Log.i("odoo", "Error 1 in ItemConnection class: $e")
         } catch (e: Exception) {
             // Handle other exceptions as needed
-            e.printStackTrace()
+            Log.i("odoo", "Error 2 in ItemConnection class: $e")
         }
 
         return@withContext mutableListOf();
     }
 
-}//
+}

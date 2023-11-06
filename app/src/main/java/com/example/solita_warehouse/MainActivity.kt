@@ -9,10 +9,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.navigation.NavigationView
-import org.opencv.android.OpenCVLoader
-import org.opencv.core.Core
-import org.opencv.core.CvType
-import org.opencv.core.Mat
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle : ActionBarDrawerToggle
@@ -38,26 +34,11 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        //Test for OpenCV
-        if (!OpenCVLoader.initDebug()) {
-            println("OpenCV initialization failed.")
-            return
-        }
-
-        // If initialization is successful, create a sample matrix
-        val mat = Mat(3, 3, CvType.CV_8UC1)
-        Core.randn(mat, 0.0, 1.0)
-
-        // Print the matrix data to the console
-        println("Sample Matrix:")
-        println(mat.dump())
-        Log.d("Test_OpenCV","Sample Matrix:")
-        Log.d("Test_OpenCV",mat.dump())
-
         navView.setNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.nav_loans -> replaceFragment(R.id.action_to_loansFragment, it.title.toString())
                 R.id.nav_rentitem -> replaceFragment(R.id.action_to_rentItem, it.title.toString())
+                R.id.nav_renteditems -> replaceFragment(R.id.action_to_rentedItems, it.title.toString())
                 R.id.nav_returnitem -> replaceFragment(R.id.action_to_returnItem, it.title.toString())
                 R.id.nav_itemavailability -> replaceFragment(R.id.action_to_itemAvailability, it.title.toString())
                 R.id.nav_reports -> replaceFragment(R.id.action_to_reports, it.title.toString())

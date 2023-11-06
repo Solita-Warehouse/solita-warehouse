@@ -12,11 +12,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.solita_warehouse.R
-import data.ItemConnection
 import data.LoginConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import model.EnvVariableLoader
 
 class LoginFragment : Fragment() {
     private lateinit var mainTitle : TextView
@@ -30,7 +30,6 @@ class LoginFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +44,8 @@ class LoginFragment : Fragment() {
         var inputFullName = ""
         var inputDepartment = ""
         var inputEmail = ""
+        val URL = EnvVariableLoader.URL
+        val DB = EnvVariableLoader.DB
 
         fullName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -82,7 +83,7 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener {
             Log.d("odoo", "### AUTHENTICATION ###");
             CoroutineScope(Dispatchers.Main).launch {
-                val loginConnection = LoginConnection("http://20.93.3.228:8069", "db", inputFullName, inputEmail)
+                val loginConnection = LoginConnection("$URL", "$DB", inputFullName, inputEmail)
                 val returnData = loginConnection.returnUserData()
             }
         }
