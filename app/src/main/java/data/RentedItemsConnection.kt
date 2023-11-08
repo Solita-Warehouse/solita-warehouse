@@ -24,6 +24,7 @@ class RentedItemsConnection() {
         modelConfig.serverURL = URL("${URL}/xmlrpc/2/object")
     }
 
+
     suspend fun returnRentedItems(): MutableList<Item> = withContext(Dispatchers.IO) {
         val itemsList : Array<*>;
 
@@ -37,11 +38,24 @@ class RentedItemsConnection() {
                     listOf(emptyList<Any>()),
                     mapOf("fields" to listOf("name", "partner_id", "state"))
 
+
                 )
             ) as Array<*>
 
-            for (rent in rentalOrderSearch) {
-                Log.i("odoo", rent.toString())
+            for(data in rentalOrderSearch){
+                for(item in data as Map<*,*>){
+                    if(item.value is Array<*>){
+                        print("${item.key}=[")
+                        for(subItem in item.value as Array<*>){
+                            print("($subItem)")
+                        }
+                        println("]")
+                    }
+                    else{
+                        println(item)
+                    }
+                }
+                println()
             }
 
         } catch(e: Exception) {
