@@ -28,9 +28,9 @@ class LoginConnection(private val baseUrl: String, private val db: String, priva
                 modelConfig,
                 "execute_kw",
                 listOf(
-                    db, 2, password,
+                    db, auth, password,
                     "res.users", "read",
-                    listOf(2),
+                    listOf(auth),
                     mapOf("fields" to listOf("login"))
                 )
             ) as Array<*>
@@ -45,6 +45,5 @@ class LoginConnection(private val baseUrl: String, private val db: String, priva
             return@withContext "" // Return an empty string or handle the error case as appropriate
         }
     }
-
 
 }

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solita_warehouse.adapters.ItemAdapter
 import data.ItemConnection
+import data.RentedItemsConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,15 +25,17 @@ class RentedItemsFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_renteditems, container, false)
         itemButton = rootView.findViewById(R.id.itemRentedButton)
+        val rentedItemsConnection = RentedItemsConnection()
 
         itemButton.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
+
 
                 //val rvItems = rootView.findViewById<View>(R.id.rvRentedItems) as RecyclerView
                 //val adapter = ItemAdapter(returnItems)
                 //rvItems.adapter = adapter
                 //rvItems.layoutManager = LinearLayoutManager(requireContext())
-                Log.i("odoo", "rentedItemsFragmentButton pressed")
+                rentedItemsConnection.returnRentedItems()
             }
         }
 

@@ -46,6 +46,7 @@ class LoginFragment : Fragment() {
         var inputEmail = ""
         val URL = EnvVariableLoader.URL
         val DB = EnvVariableLoader.DB
+        val URL_LOCAL = EnvVariableLoader.URL_LOCAL
 
         fullName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}

@@ -25,6 +25,7 @@ class ItemConnection() {
 
     suspend fun returnItems(): MutableList<Item> = withContext(Dispatchers.IO) {
         val itemsList : Array<*>;
+
         try {
              itemsList = client.execute(
                 modelConfig,
