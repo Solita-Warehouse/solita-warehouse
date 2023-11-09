@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import model.EnvVariableLoader
 import model.Item
+import model.RentedItem
 import org.apache.xmlrpc.client.XmlRpcClient
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 import java.io.EOFException
@@ -37,25 +38,25 @@ class RentedItemsConnection() {
                     "sale.order", "search_read",
                     listOf(emptyList<Any>()),
                     mapOf("fields" to listOf("name", "partner_id", "state"))
-
-
                 )
             ) as Array<*>
 
             for(data in rentalOrderSearch){
+                val rentedItem = RentedItem("", 0, "", "", "")
                 for(item in data as Map<*,*>){
                     if(item.value is Array<*>){
-                        print("${item.key}=[")
+                        //Log.i("odoo", "${item.key}")
                         for(subItem in item.value as Array<*>){
-                            print("($subItem)")
+                            //Log.i("odoo","$subItem")
+                            rentedItem.partnerId = subItem.toString()
+                            Log.i("odoo", rentedItem.toString())
                         }
-                        println("]")
                     }
-                    else{
-                        println(item)
+                    else {
+                        //Log.i("odoo", item.toString())
                     }
+
                 }
-                println()
             }
 
         } catch(e: Exception) {
