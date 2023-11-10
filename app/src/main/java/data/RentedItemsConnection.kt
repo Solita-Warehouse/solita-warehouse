@@ -32,9 +32,9 @@ class RentedItemsConnection() {
                 "execute_kw",
                 listOf(
                     DB, 2, PASSWORD,
-                    "sale.order", "search_read",
+                    "sale.order.line", "search_read",
                     listOf(emptyList<Any>()),
-                    mapOf("fields" to listOf("name", "partner_id", "state"))
+                    mapOf("fields" to listOf("name", "order_partner_id", "state"))
                 )
             ) as Array<*>
 
@@ -52,7 +52,7 @@ class RentedItemsConnection() {
                     if (item.key == "state") {
                         rentedItem.state = item.value.toString()
                     }
-                    if (item.key == "partner_id") {
+                    if (item.key == "order_partner_id") {
                         if (item.value is Array<*>) {
                             for (subItem in item.value as Array<*>) {
                                 if (subItem is Int) {
@@ -66,8 +66,9 @@ class RentedItemsConnection() {
                 }
                 rentedItems.add(rentedItem)
             }
-            Log.i("odoo", rentedItems.toString())
-
+            for (item in rentedItems) {
+                Log.i("odoo", item.toString())
+            }
         } catch(e: Exception) {
             Log.i("odoo", "crashed :( $e")
             return@withContext mutableListOf();
