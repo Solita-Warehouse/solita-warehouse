@@ -49,7 +49,10 @@ class RentFragment : Fragment() {
                     val returnItems = itemsDeferred.await()
                     val returnRentedItems = rentedItemsDeferred.await()
 
-                    // Check if the list is empty
+                    // Check if the list is empty,
+                    // bad solution because it'll throw an error if there are no rent
+                    // Could be better to lift up the try catch here and remove it from functions
+                    // in ItemConnection
                     if (returnRentedItems.isEmpty()) {
                         throw IllegalStateException("The list of rented items is empty.")
                     }
