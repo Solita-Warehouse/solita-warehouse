@@ -14,6 +14,7 @@ class ItemAdapter(private val mItems: List<Item>) : RecyclerView.Adapter<ItemAda
         // Your holder should contain and initialize a member variable
         // for any view that will be set as you render a row
         val nameTextItem = itemView.findViewById<TextView>(R.id.itemNameTitle)
+        val availableTextItem = itemView.findViewById<TextView>(R.id.itemAvailableTitle)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,8 +27,14 @@ class ItemAdapter(private val mItems: List<Item>) : RecyclerView.Adapter<ItemAda
 
     override fun onBindViewHolder(viewHolder: ItemAdapter.ViewHolder, position: Int) {
         val item: Item = mItems.get(position)
+
+        // Item names
         val nameTextView = viewHolder.nameTextItem
-        nameTextView.setText(item.name +" Available : "+ item.available)
+        nameTextView.setText(item.name)
+
+        // Item availability
+        val availableTextView = viewHolder.availableTextItem
+        availableTextView.setText(item.available.toString())
     }
 
     override fun getItemCount(): Int {

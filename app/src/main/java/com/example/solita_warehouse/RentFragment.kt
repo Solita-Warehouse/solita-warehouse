@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import io.github.cdimascio.dotenv.dotenv
+import kotlinx.coroutines.async
 
 class RentFragment : Fragment() {
     private lateinit var itemButton : Button
@@ -32,27 +33,48 @@ class RentFragment : Fragment() {
             //Could be defined in ViewModel
             CoroutineScope(Dispatchers.Main).launch {
                 // Get all rentable item form Odoo
-                val itemConnection =  ItemConnection()
-                var returnItems = itemConnection.returnItems()
+                try {
+                    val itemConnection =  ItemConnection()
+                    //var returnItems = itemConnection.returnItems()
 
-                // Fetch all rental_orders
-                val rentedItemsConnection = RentedItemsConnection()
-                val returnRentedItems = rentedItemsConnection.returnRentedItems()
-                val idList = returnRentedItems.map { it.name }
-                Log.i("odoo", " Currently rented items : $returnRentedItems")
-                // Check availability
-                for (item in returnItems) {
-                    if (idList.contains(item.name)) {
-                        item.setAvailableStatus(false)
+                    // Fetch all rental_orders
+                    val rentedItemsConnection = RentedItemsConnection()
+                    //val returnRentedItems = rentedItemsConnection.returnRentedItems()
+
+                    // Use async to fetch data concurrently
+                    val itemsDeferred = async { itemConnection.returnItems() }
+                    val rentedItemsDeferred = async { rentedItemsConnection.returnRentedItems() }
+
+                    // Wait for both deferred values to be available
+                    val returnItems = itemsDeferred.await()
+                    val returnRentedItems = rentedItemsDeferred.await()
+
+                    // Check if the list is empty
+                    if (returnRentedItems.isEmpty()) {
+                        throw IllegalStateException("The list of rented items is empty.")
                     }
-                }
-                // Use recycler view to display fetched item
-                Log.i("odoo", " All rentable items : $returnItems")
-                val rvItems = rootView.findViewById<View>(R.id.rvItems) as RecyclerView
-                val adapter = ItemAdapter(returnItems)
 
-                rvItems.adapter = adapter
-                rvItems.layoutManager = LinearLayoutManager(requireContext())
+                    val idList = returnRentedItems.map { it.name }
+                    Log.i("odoo", " Currently rented items : $returnRentedItems")
+                    // Check availability
+                    for (item in returnItems) {
+                        if (idList.contains(item.name)) {
+                            item.setAvailableStatus(false)
+                        }
+                    }
+                    // Use recycler view to display fetched item
+                    Log.i("odoo", " All rentable items : $returnItems")
+                    val rvItems = rootView.findViewById<View>(R.id.rvItems) as RecyclerView
+                    val adapter = ItemAdapter(returnItems)
+
+                    rvItems.adapter = adapter
+                    rvItems.layoutManager = LinearLayoutManager(requireContext())
+
+                } catch (e: Exception) {
+                // Handle exceptions
+                Log.e("odoo", "Error fetching data: ${e.message}", e)
+            }
+
             }
         }
 
