@@ -1,7 +1,7 @@
 package model
 
-class User (val userName: String, val department : String, val eMail : String) {
+class User (var userName: String, var id: Int, var partnerId: Int, var eMail: String) {
     override fun toString(): String {
-        return "$userName $department $eMail"
+        return "username = $userName, id = $id, partnerId = $partnerId, email = $eMail"
     }
 }

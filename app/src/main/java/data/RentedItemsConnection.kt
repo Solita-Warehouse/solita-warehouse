@@ -15,6 +15,7 @@ class RentedItemsConnection() {
     private val client = XmlRpcClient()
     private val modelConfig = XmlRpcClientConfigImpl()
     private val rentedItems = mutableListOf<RentedItem>()
+    private val rentedItemsById = mutableListOf<RentedItem>()
     val DB = EnvVariableLoader.DB
     val PASSWORD = EnvVariableLoader.PASSWORD
     val PASSWORD_LOCAL = EnvVariableLoader.PASSWORD_LOCAL
@@ -37,8 +38,6 @@ class RentedItemsConnection() {
                     mapOf("fields" to listOf("name", "order_partner_id", "state"))
                 )
             ) as Array<*>
-
-            Log.i("odoo", rentalOrderSearch[0].toString())
 
             for(data in rentalOrderSearch) {
                 val rentedItem = RentedItem(0, 0, "", "", "")
@@ -66,14 +65,27 @@ class RentedItemsConnection() {
                 }
                 rentedItems.add(rentedItem)
             }
-            for (item in rentedItems) {
-                Log.i("odoo", item.toString())
-            }
         } catch(e: Exception) {
             Log.i("odoo", "crashed :( $e")
             return@withContext mutableListOf();
         }
         return@withContext rentedItems
+    }
+
+    suspend fun returnRentedItemsById(): MutableList<RentedItem> = withContext(Dispatchers.IO) {
+        val rentedItems = returnRentedItems()
+
+        for (item in rentedItems) {
+            if (item.partnerId == 7) {
+                rentedItemsById.add(item)
+            }
+        }
+
+        for (item in rentedItemsById) {
+            Log.i("odoo", item.toString())
+        }
+        Log.i("odoo", rentedItemsById.toString())
+        return@withContext rentedItemsById
     }
 
 }

@@ -41,9 +41,12 @@ class ReportsFragment : Fragment() {
         var inputDepartment = ""
         var inputEmail = ""
 
-        val user = User("Jukka", "Boss", "jukka@jukka.com")
+        //COMMENTED LINES TO MAKE THE CODE WORK FOR NOW, THE USER MODEL CHANGED SO THIS CODE NO LONGER
+        //WORKS
 
-        userView.setUser(user)
+        //val user = User("Jukka", "Boss", "jukka@jukka.com")
+
+        //userView.setUser(user)
 
         userView.user.observe(viewLifecycleOwner, Observer { user ->
             // Update UI with user data
@@ -53,7 +56,7 @@ class ReportsFragment : Fragment() {
             val emailTextView = rootView.findViewById<TextView>(R.id.tvEmail)
 
             userNameTextView.text = user?.userName
-            departmentTextView.text = user?.department
+            //departmentTextView.text = user?.department
             emailTextView.text = user?.eMail
         })
 
@@ -99,8 +102,8 @@ class ReportsFragment : Fragment() {
         }
 
         button2.setOnClickListener {
-            val newUser = User(inputName, inputDepartment, inputEmail)
-            userView.setUser(newUser)
+            //val newUser = User(inputName, inputDepartment, inputEmail)
+            //userView.setUser(newUser)
         }
         return rootView
     }

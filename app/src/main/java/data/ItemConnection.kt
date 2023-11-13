@@ -48,7 +48,6 @@ class ItemConnection() {
                             val newItem = Item(name.toString(), id)
                             itemList.add(newItem)
                         }
-
                     }
                 }
             } else {
