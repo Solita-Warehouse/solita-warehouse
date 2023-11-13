@@ -34,7 +34,7 @@ class ItemConnection() {
                     DB, 2, PASSWORD,
                     "product.product", "search_read",
                     listOf(emptyList<Any>()),
-                    mapOf("fields" to listOf("name", "id"))
+                    mapOf("fields" to listOf("name", "id", "rental"))
                 )
             ) as Array<*>
 
@@ -42,11 +42,15 @@ class ItemConnection() {
                 for (item in itemsList) {
                     // Ensure item is a Map (dictionary)
                     if (item is Map<*, *>) {
-                        val name = item["name"]
-                        val id = item["id"]
-                        if (id is Int) {
-                            val newItem = Item(name.toString(), id)
-                            itemList.add(newItem)
+                        // Make sure the item is rentable
+                        if(item["rental"] == true){
+                            val name = item["name"]
+                            val id = item["id"]
+                            if (id is Int) {
+                                // Create new item with fetched data and default available value true
+                                var newItem = Item(name.toString(), id, available = true)
+                                itemList.add(newItem)
+                            }
                         }
                     }
                 }

@@ -27,7 +27,7 @@ class ItemAdapter(private val mItems: List<Item>) : RecyclerView.Adapter<ItemAda
     override fun onBindViewHolder(viewHolder: ItemAdapter.ViewHolder, position: Int) {
         val item: Item = mItems.get(position)
         val nameTextView = viewHolder.nameTextItem
-        nameTextView.setText(item.name)
+        nameTextView.setText(item.name +" Available : "+ item.available)
     }
 
     override fun getItemCount(): Int {
