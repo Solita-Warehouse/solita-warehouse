@@ -18,10 +18,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import com.example.solita_warehouse.ImageComparator
+import com.example.solita_warehouse.ModelManager
 import com.example.solita_warehouse.R
+import com.example.solita_warehouse.ml.SsdMobilenetV11Metadata1
 import com.google.common.util.concurrent.ListenableFuture
 import org.opencv.android.Utils
+import org.tensorflow.lite.support.common.FileUtil
+import org.tensorflow.lite.support.image.TensorImage
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -34,8 +37,11 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
     private lateinit var cameraSelector: CameraSelector
     private lateinit var imageCapture: ImageCapture
     private var isFrontCameraActive = false
-    private lateinit var imageComparator: ImageComparator
     private lateinit var savedUri: Uri
+
+    lateinit var labels: List<String>
+    lateinit var model: SsdMobilenetV11Metadata1
+
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -52,9 +58,8 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
         previewView = view.findViewById(R.id.preview_view)
 
         startCameraWithPermissionCheck()
+        labels = FileUtil.loadLabels(requireContext(), "labels.txt")
 
-        // Initialize the image comparator with the application context
-        imageComparator = ImageComparator(requireContext())
 
         // Find the capture button
         val captureButton = view.findViewById<Button>(R.id.capture_button)
@@ -149,11 +154,18 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
                     val savedUri = outputFileResults.savedUri ?: Uri.fromFile(photoFile)
                     showToast("Photo saved: $savedUri")
 
-                    val resImage = Utils.bitmapToMat(Utils.getBitmapFromAsset(requireContext(), "IMG20231004142955.jpg"))
-                    val capturedImage = Utils.bitmapToMat(Utils.getBitmapFromUri(savedUri, requireContext()))
-                    val result = imageComparator.compareImages(capturedImage, resImage)
-                    // Do something with the comparison result
-                    println(result)
+                    val resImage = Utils.getBitmapFromAsset(requireContext(), "Banana-Single.jpg")
+                    val capturedImage = Utils.getBitmapFromUri(savedUri, requireContext())
+
+
+                    val image = TensorImage.fromBitmap(resImage)
+
+                    getPredictions(image)
+
+
+
+
+
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -164,7 +176,22 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
         )
     }
 
+    fun getPredictions(image: TensorImage){
+        model = ModelManager.getModel(requireContext());
+        val outputs = model.process(image)
+        val locations = outputs.locationsAsTensorBuffer.floatArray
+        val classes = outputs.classesAsTensorBuffer.floatArray
+        val scores = outputs.scoresAsTensorBuffer.floatArray
+        val numberOfDetections = outputs.numberOfDetectionsAsTensorBuffer.floatArray
 
+        scores.forEachIndexed { index, fl ->
+            if(fl > 0.5){
+
+                println(labels[classes.get(index).toInt()] + " " + fl.toString())
+            }
+        }
+
+    }
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }

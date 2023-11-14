@@ -8,13 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.example.solita_warehouse.ml.SsdMobilenetV11Metadata1
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle : ActionBarDrawerToggle
     lateinit var drawerLayout : DrawerLayout
     lateinit var navController : NavController
-
+    lateinit var model: SsdMobilenetV11Metadata1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        model = ModelManager.getModel(this)
 
         navView.setNavigationItemSelectedListener {
             when(it.itemId) {
