@@ -28,6 +28,10 @@ import org.tensorflow.lite.support.image.TensorImage
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
+import android.content.ContentValues
+import android.provider.MediaStore
+import android.os.Environment
+import java.io.FileInputStream
 
 
 class ReturnFragment : Fragment(R.layout.fragment_return) {
@@ -154,18 +158,14 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
                     val savedUri = outputFileResults.savedUri ?: Uri.fromFile(photoFile)
                     showToast("Photo saved: $savedUri")
 
+                    // Save the image to the gallery
+                    saveImageToGallery(photoFile)
+
                     val resImage = Utils.getBitmapFromAsset(requireContext(), "Banana-Single.jpg")
                     val capturedImage = Utils.getBitmapFromUri(savedUri, requireContext())
 
-
                     val image = TensorImage.fromBitmap(resImage)
-
                     getPredictions(image)
-
-
-
-
-
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -175,6 +175,26 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
             }
         )
     }
+
+    private fun saveImageToGallery(photoFile: File) {
+        val contentResolver = requireContext().contentResolver
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, photoFile.name)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+        }
+
+        val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        uri?.let {
+            contentResolver.openOutputStream(uri)?.use { outputStream ->
+                val inputStream = FileInputStream(photoFile)
+                inputStream.copyTo(outputStream)
+            }
+            showToast("Photo saved to gallery")
+        } ?: showToast("Failed to save photo to gallery")
+    }
+
 
     fun getPredictions(image: TensorImage){
         model = ModelManager.getModel(requireContext());
@@ -186,8 +206,8 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
 
         scores.forEachIndexed { index, fl ->
             if(fl > 0.5){
-
-                println(labels[classes.get(index).toInt()] + " " + fl.toString())
+                showToast(labels[classes.get(index).toInt()] + " " + fl.toString())
+                //println(labels[classes.get(index).toInt()] + " " + fl.toString())
             }
         }
 
