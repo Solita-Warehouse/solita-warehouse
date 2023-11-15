@@ -156,12 +156,11 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val savedUri = outputFileResults.savedUri ?: Uri.fromFile(photoFile)
-                    showToast("Photo saved: $savedUri")
 
                     // Save the image to the gallery
                     saveImageToGallery(photoFile)
 
-                    val resImage = Utils.getBitmapFromAsset(requireContext(), "Banana-Single.jpg")
+                    val resImage = Utils.getBitmapFromAsset(requireContext(), "scissors.jpg")
                     val capturedImage = Utils.getBitmapFromUri(savedUri, requireContext())
 
                     val image = TensorImage.fromBitmap(resImage)
@@ -191,7 +190,7 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
                 val inputStream = FileInputStream(photoFile)
                 inputStream.copyTo(outputStream)
             }
-            showToast("Photo saved to gallery")
+            //showToast("Photo saved to gallery")
         } ?: showToast("Failed to save photo to gallery")
     }
 
@@ -207,7 +206,7 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
         scores.forEachIndexed { index, fl ->
             if(fl > 0.5){
                 showToast(labels[classes.get(index).toInt()] + " " + fl.toString())
-                //println(labels[classes.get(index).toInt()] + " " + fl.toString())
+                println(labels[classes.get(index).toInt()] + " " + fl.toString())
             }
         }
 
