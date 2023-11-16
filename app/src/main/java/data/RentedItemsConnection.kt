@@ -43,7 +43,7 @@ class RentedItemsConnection() {
             ) as Array<*>
 
             for(data in rentalOrderSearch) {
-                val rentedItem = RentedItem(0, 0, "", "", "")
+                val rentedItem = RentedItem(0, 0, "", "", "", "")
                 for (item in data as Map<*, *>) {
                     if (item.key == "id") {
                         rentedItem.id = item.value as Int
@@ -76,10 +76,12 @@ class RentedItemsConnection() {
     }
 
     suspend fun returnRentedItemsById(): MutableList<RentedItem> = withContext(Dispatchers.IO) {
+        rentedItemsById.clear()
+        rentedItems.clear()
         val rentedItems = returnRentedItems()
 
         for (item in rentedItems) {
-            if (item.partnerId == 7) {
+            if (item.partnerId == currentUser.partnerId) {
                 rentedItemsById.add(item)
             }
         }
