@@ -48,7 +48,7 @@ class ItemConnection() {
                             val id = item["id"]
                             if (id is Int) {
                                 // Create new item with fetched data and default available value true
-                                var newItem = Item(name.toString(), id, available = true)
+                                var newItem = Item(name.toString(), id, "Available")
                                 itemList.add(newItem)
                             }
                         }

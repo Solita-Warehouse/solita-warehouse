@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.solita_warehouse.ml.SsdMobilenetV11Metadata1
 import com.google.android.material.navigation.NavigationView
+import data.currentUser
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle : ActionBarDrawerToggle

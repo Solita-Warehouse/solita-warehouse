@@ -62,7 +62,7 @@ class RentFragment : Fragment() {
                     // Check availability
                     for (item in returnItems) {
                         if (idList.contains(item.name)) {
-                            item.setAvailableStatus(false)
+                            item.setAvailableStatus("Not available")
                         }
                     }
                     // Use recycler view to display fetched item

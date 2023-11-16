@@ -34,7 +34,7 @@ class ItemAdapter(private val mItems: List<Item>) : RecyclerView.Adapter<ItemAda
 
         // Item availability
         val availableTextView = viewHolder.availableTextItem
-        availableTextView.setText(item.available.toString())
+        availableTextView.setText(item.availability)
     }
 
     override fun getItemCount(): Int {
