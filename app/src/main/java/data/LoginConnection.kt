@@ -58,6 +58,7 @@ class LoginConnection(private val baseUrl: String, private val db: String, priva
                     }
                 }
             }
+            Log.i("test", userInformation[0].toString())
             Log.i("odoo", currentUser.toString())
 
             return@withContext currentUser

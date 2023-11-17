@@ -13,7 +13,6 @@ import com.example.solita_warehouse.adapters.OwnRentedItemsAdapter
 import data.RentedItemsConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
