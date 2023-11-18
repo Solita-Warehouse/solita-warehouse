@@ -40,6 +40,15 @@ class LoansFragment : Fragment() {
             }
         }
 
+        ownLoansButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                val returnRentedItemsById = rentedOwnItemsConnection.returnRentedItemsById()
+                val rvRentedItems = rootView.findViewById<View>(R.id.rvOwnRentedItems) as RecyclerView
+                val adapter = OwnRentedItemsAdapter(returnRentedItemsById)
+                rvRentedItems.adapter = adapter
+                rvRentedItems.layoutManager = LinearLayoutManager(requireContext())
+            }
+        }
         return rootView
     }
 

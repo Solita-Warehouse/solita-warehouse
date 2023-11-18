@@ -163,7 +163,7 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
                     val resImage = Utils.getBitmapFromAsset(requireContext(), "scissors.jpg")
                     val capturedImage = Utils.getBitmapFromUri(savedUri, requireContext())
 
-                    val image = TensorImage.fromBitmap(resImage)
+                    val image = TensorImage.fromBitmap(capturedImage)
                     getPredictions(image)
                 }
 
@@ -203,11 +203,21 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
         val scores = outputs.scoresAsTensorBuffer.floatArray
         val numberOfDetections = outputs.numberOfDetectionsAsTensorBuffer.floatArray
 
+        var i = 0
+        var fl2 = 0.0
+
         scores.forEachIndexed { index, fl ->
-            if(fl > 0.5){
-                showToast(labels[classes.get(index).toInt()] + " " + fl.toString())
-                println(labels[classes.get(index).toInt()] + " " + fl.toString())
+            if (fl > fl2){
+                fl2 = fl.toDouble()
+                i = index
             }
+        }
+        if (fl2 > 0.5 && (ModelManager.getItem().lowercase() == labels[classes.get(i).toInt()])){
+            showToast(labels[classes.get(i).toInt()] + " " + fl2.toString())
+            println(labels[classes.get(i).toInt()] + " " + fl2.toString())
+            showToast("item recognized")
+        }else{
+            showToast("item not recognized")
         }
 
     }
