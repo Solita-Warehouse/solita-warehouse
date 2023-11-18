@@ -103,7 +103,9 @@ class RentedItemsConnection() {
     suspend fun returnRentedItemsById(): MutableList<RentedItem> = withContext(Dispatchers.IO) {
         val rentedItems = returnRentedItems()
         rentedItemsById.clear()
-
+        val currentUser = AuthManager.getInstance().getCurrentUser()
+        Log.i("odoo", "current user : ${currentUser}")
+        Log.i("odoo", "current user's partner id : ${currentUser.partnerId}")
         for (item in rentedItems) {
             if (item.partnerId == currentUser.partnerId) {
                 rentedItemsById.add(item)
@@ -118,6 +120,7 @@ class RentedItemsConnection() {
 
     suspend fun createItemRent(startDate: String, endDate: String, productId: Int): String = withContext(Dispatchers.IO) {
         var orderId = 0
+        val currentUser = AuthManager.getInstance().getCurrentUser()
 
         //Creates new rental order.
         try {

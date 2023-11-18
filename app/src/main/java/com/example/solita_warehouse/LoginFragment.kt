@@ -1,5 +1,6 @@
 package com.example.solitawarehouse
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,7 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.solita_warehouse.R
-import data.LoginConnection
+import data.AuthManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -84,12 +85,25 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener {
             Log.d("odoo", "### AUTHENTICATION ###");
             CoroutineScope(Dispatchers.Main).launch {
-                val loginConnection = LoginConnection("$URL", "$DB", inputFullName, inputEmail)
-                val returnData = loginConnection.returnUserData()
+                val success = AuthManager.getInstance().authSequence(inputFullName, inputEmail)
+                // Show alert after that
+                showAlert("Authentication", "Authentication success : $success")
             }
         }
 
         return rootView
     }
+    private fun showAlert(title: String, message : String) {
 
+
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK") { _, _ ->
+                // Do something when the "OK" button is clicked, if needed
+            }
+            .create()
+
+        alertDialog.show()
+    }
 }
