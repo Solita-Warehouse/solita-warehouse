@@ -33,11 +33,13 @@ class RentedItemsConnection() {
     suspend fun returnRentedItems(): MutableList<RentedItem> = withContext(Dispatchers.IO) {
         try {
             rentedItems.clear()
+            val authManager = AuthManager.getInstance()
+
             val rentalOrderSearch = client.execute(
                 modelConfig,
                 "execute_kw",
                 listOf(
-                    DB, 2, PASSWORD,
+                    DB, authManager.getUid(), authManager.getPassword(),
                     "sale.order.line", "search_read",
                     listOf(emptyList<Any>()),
                     mapOf("fields" to listOf("name", "order_partner_id", "state", "end_date", "order_id", "product_id"))

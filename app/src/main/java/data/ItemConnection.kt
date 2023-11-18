@@ -25,13 +25,13 @@ class ItemConnection() {
 
     suspend fun returnItems(): MutableList<Item> = withContext(Dispatchers.IO) {
         val itemsList : Array<*>;
-
+        val authManager = AuthManager.getInstance()
         try {
              itemsList = client.execute(
                 modelConfig,
                 "execute_kw",
                 listOf(
-                    DB, 2, PASSWORD,
+                    DB, authManager.getUid(), authManager.getPassword(),
                     "product.product", "search_read",
                     listOf(emptyList<Any>()),
                     mapOf("fields" to listOf("name", "id", "rental"))
