@@ -1,5 +1,6 @@
 package com.example.solita_warehouse.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,7 @@ class OwnRentedItemsAdapter(private val mOwnRentedItems: List<RentedItem>) : Rec
 
         // Handle button click for each item
         buttonItemAction.setOnClickListener {
+            Log.i("odoo", "Returning item, id: ${rentedItem.productId} - name: ${rentedItem.name}")
             ModelManager.setItem(rentedItem.name)
             it.findNavController().navigate(R.id.action_to_returnItem)
         }

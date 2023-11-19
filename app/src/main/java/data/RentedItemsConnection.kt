@@ -184,7 +184,7 @@ class RentedItemsConnection() {
             Log.i("odoo", "Something went wrong adding item to rental order.")
         }
 
-        return@withContext ""
+        return@withContext "Rent successfully confirmed with $orderId"
     }
 
     //Just useful when you want to find out all the item id's, otherwise useless, delete later.

@@ -94,8 +94,6 @@ class LoginFragment : Fragment() {
         return rootView
     }
     private fun showAlert(title: String, message : String) {
-
-
         val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle(title)
             .setMessage(message)

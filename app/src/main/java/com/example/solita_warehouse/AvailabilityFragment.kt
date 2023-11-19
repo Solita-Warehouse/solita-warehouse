@@ -1,5 +1,7 @@
 package com.example.solitawarehouse
 
+import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,14 +22,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import model.EnvVariableLoader
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 class AvailabilityFragment : Fragment() {
     private lateinit var mainTitle : TextView
-    private lateinit var startDate : EditText
-    private lateinit var endDate : EditText
     private lateinit var rentButton: Button
-    private lateinit var loginNameText : TextView
     private lateinit var productIdMenu : Spinner
+    private lateinit var startDateButton : Button
+    private lateinit var endDateButton : Button
+    private lateinit var startDateTextView : TextView
+    private lateinit var endDateTextView : TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,11 +42,13 @@ class AvailabilityFragment : Fragment() {
     ): View? {
         val rootView =  inflater.inflate(R.layout.fragment_availability, container, false)
         mainTitle = rootView.findViewById(R.id.mainTitle4)
-        startDate = rootView.findViewById(R.id.startDate)
-        endDate = rootView.findViewById(R.id.endDate)
         rentButton = rootView.findViewById(R.id.rentButton)
-        loginNameText = rootView.findViewById(R.id.loginNameText4)
         productIdMenu = rootView.findViewById(R.id.productIdSpinner)
+        startDateButton = rootView.findViewById(R.id.startDateButton)
+        endDateButton = rootView.findViewById(R.id.endDateButton)
+        startDateTextView = rootView.findViewById(R.id.startDateTextView)
+        endDateTextView = rootView.findViewById(R.id.endDateTextView)
+
         val productOptions = arrayOf("Binoculars", "Black Pen", "Blue Silver Pen", "Measure Tape", "Red Pen",
             "Retractable HP Mouse", "Scissors", "Screwdriver Bits Box", "White Tube", "Wrench")
 
@@ -57,27 +66,6 @@ class AvailabilityFragment : Fragment() {
         val URL_LOCAL = EnvVariableLoader.URL_LOCAL
         val rentedItemsConnection = RentedItemsConnection()
 
-        startDate.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                inputStartDate = "$p0"
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-
-        })
-
-        endDate.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                inputEndDate = "$p0"
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-
-        })
 
         //Not very good hardcoded solution. FIX PLS!
         productIdMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -123,11 +111,61 @@ class AvailabilityFragment : Fragment() {
 
         rentButton.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                val returnOrder = rentedItemsConnection.createItemRent(inputStartDate, inputEndDate, inputProductId)
+                if (startDateTextView.text.toString() == "Start Date" || endDateTextView.text.toString() == "End Date") {
+                    Log.i("odoo", "Either start date or end date was empty.")
+                    showAlert("Error", "You cannot leave start or end date empty!")
+                } else {
+                    val returnOrder = rentedItemsConnection.createItemRent(startDateTextView.text.toString(), endDateTextView.text.toString(), inputProductId)
+                    showAlert("Success", returnOrder)
+                }
+            }
+        }
+
+        startDateButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                openDialog(startDateTextView)
+            }
+        }
+
+        endDateButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                openDialog(endDateTextView)
             }
         }
 
         return rootView
+    }
+
+    fun openDialog(textView: TextView) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = SimpleDateFormat("yyyy-MM-dd").format(Date(selectedYear - 1900, selectedMonth, selectedDay))
+                textView.text = selectedDate
+            },
+            year,
+            month,
+            dayOfMonth
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun showAlert(title: String, message : String) {
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK") { _, _ ->
+                // Do something when the "OK" button is clicked, if needed
+            }
+            .create()
+
+        alertDialog.show()
     }
 
 }
