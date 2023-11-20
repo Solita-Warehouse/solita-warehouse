@@ -37,15 +37,23 @@ class OwnRentedItemsAdapter(private val mOwnRentedItems: List<RentedItem>) : Rec
         val rentedOwnNameTextView = viewHolder.nameTextOwnRentedItem
         val endDateNameTextView = viewHolder.endDateTextReturnDate
         val buttonItemAction = viewHolder.buttonItemAction
+        val renteditemsconnection = RentedItemsConnection()
 
         rentedOwnNameTextView.text = rentedItem.name
         endDateNameTextView.text = rentedItem.endDate
 
         // Handle button click for each item
         buttonItemAction.setOnClickListener {
-            Log.i("odoo", "Returning item, id: ${rentedItem.productId} - name: ${rentedItem.name}")
-            ModelManager.setItem(rentedItem.name)
-            it.findNavController().navigate(R.id.action_to_returnItem)
+            CoroutineScope(Dispatchers.Main).launch {
+                Log.i(
+                    "odoo",
+                    "Returning item, id: ${rentedItem.productId} - name: ${rentedItem.name} - orderId: ${rentedItem.orderId} "
+                )
+
+                ModelManager.setItem(rentedItem.name)
+                // it.findNavController().navigate(R.id.action_to_returnItem)
+                val deleteOrder = renteditemsconnection.deleteOrder(rentedItem.orderId)
+            }
         }
     }
 
@@ -53,4 +61,3 @@ class OwnRentedItemsAdapter(private val mOwnRentedItems: List<RentedItem>) : Rec
         return mOwnRentedItems.size
     }
 }
-
