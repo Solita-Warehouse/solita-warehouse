@@ -10,6 +10,10 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solita_warehouse.ModelManager
 import com.example.solita_warehouse.R
+import data.RentedItemsConnection
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import model.RentedItem
 
 class OwnRentedItemsAdapter(private val mOwnRentedItems: List<RentedItem>) : RecyclerView.Adapter<OwnRentedItemsAdapter.ViewHolder>() {

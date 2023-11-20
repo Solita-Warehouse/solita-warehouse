@@ -205,4 +205,51 @@ class RentedItemsConnection() {
         }
         return@withContext ""
     }
+    suspend fun deleteOrder(x: Int): MutableList<RentedItem> = withContext(Dispatchers.IO) {
+        val rentedItem = RentedItem(0, 0, 0, 0, "", "", "", "", "")
+
+        try {
+            // Replace with the ID of the rental order you want to delete
+            val salesOrderID = x
+
+            val confirmCancel = client.execute(
+                modelConfig,
+                "execute_kw",
+                listOf(
+                    DB, 2, PASSWORD,
+                    "sale.order", "action_cancel",
+                    listOf(listOf(salesOrderID)) // id of the order_id to cancel
+                )) as Boolean
+
+            if (confirmCancel) {
+                println("Rental order successfully canceled")
+            } else {
+                println("Failed to cancel the rental order.")
+            }
+
+                // Model to delete
+                val deleteResult = client.execute(
+                    modelConfig,
+                    "execute_kw",
+                    listOf(
+                        DB, 2, PASSWORD,
+                        "sale.order", "unlink",
+                        listOf(listOf(salesOrderID))
+                    )
+                ) as Boolean
+
+                // Check if deletion worked
+                if (deleteResult) {
+                    println("Sales order deleted successfully.")
+                } else {
+                    println("Error deleting the sales order.")
+                }
+
+            } catch (e: Exception) {
+                println("An error occurred: ${e.message}")
+            }
+
+
+        return@withContext rentedItems
+    }
 }
