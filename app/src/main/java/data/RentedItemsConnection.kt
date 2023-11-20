@@ -14,6 +14,7 @@ import java.io.EOFException
 import java.net.URL
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 
 class RentedItemsConnection() {
@@ -125,15 +126,18 @@ class RentedItemsConnection() {
     suspend fun createItemRent(startDate: String, endDate: String, productId: Int): Int = withContext(Dispatchers.IO) {
         var orderId = 0
         val currentUser = AuthManager.getInstance().getCurrentUser()
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val startDateAsDate: LocalDate
+        val endDateAsDate: LocalDate
 
-        if (startDate == "Start Date" || endDate == "End Date") {
-            Log.i("odoo", "Start date or end date cannot be left empty.")
+        //Check whether inputs startDate and endDate are in date format or not.
+        try {
+            startDateAsDate = LocalDate.parse(startDate, dateFormatter)
+            endDateAsDate = LocalDate.parse(endDate, dateFormatter)
+        } catch (e: DateTimeParseException) {
+            Log.i("odoo", "Invalid date format for start date or end date.")
             return@withContext -1
         }
-
-        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val startDateAsDate = LocalDate.parse(startDate, dateFormatter)
-        val endDateAsDate = LocalDate.parse(endDate, dateFormatter)
 
         if (endDateAsDate < startDateAsDate) {
             Log.i("odoo", "End date cannot be earlier than start date.")
