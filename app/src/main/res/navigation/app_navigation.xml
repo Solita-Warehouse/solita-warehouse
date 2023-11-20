@@ -34,9 +34,9 @@
     </fragment>
     <fragment
         android:id="@+id/loansFragment"
-        android:name="com.example.solitawarehouse.LoansFragment"
+        android:name="com.example.solitawarehouse.OwnRentedItemsFragment"
         android:label="fragment_loans"
-        tools:layout="@layout/fragment_loans" />
+        tools:layout="@layout/fragment_your_rented_items" />
     <fragment
         android:id="@+id/rentFragment"
         android:name="com.example.solitawarehouse.RentFragment"
@@ -49,9 +49,9 @@
         tools:layout="@layout/fragment_return" />
     <fragment
         android:id="@+id/availabilityFragment"
-        android:name="com.example.solitawarehouse.AvailabilityFragment"
+        android:name="com.example.solitawarehouse.RentDialogFragment"
         android:label="fragment_availability"
-        tools:layout="@layout/fragment_availability" />
+        tools:layout="@layout/fragment_rent_dialog" />
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.example.solitawarehouse.ReportsFragment"
@@ -59,8 +59,8 @@
         tools:layout="@layout/fragment_reports" />
     <fragment
         android:id="@+id/rentedItemsFragment"
-        android:name="com.example.solita_warehouse.RentedItemsFragment"
+        android:name="com.example.solita_warehouse.RentedItemsByUserFragment"
         android:label="fragment_renteditems"
-        tools:layout="@layout/fragment_renteditems" />
+        tools:layout="@layout/fragment_renteditems_by_user" />
 
 </navigation>

@@ -1,19 +1,18 @@
 package com.example.solita_warehouse.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.Button
-import androidx.navigation.findNavController
-import com.example.solita_warehouse.ModelManager
+import androidx.fragment.app.FragmentManager
 import com.example.solita_warehouse.R
+import com.example.solitawarehouse.RentDialogFragment
 import model.Item
 
 
-class ItemAdapter(private val mItems: List<Item>) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
+class RentItemsAdapter(private val mItems: List<Item>, private val fragmentManager: FragmentManager) : RecyclerView.Adapter<RentItemsAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Your holder should contain and initialize a member variable
         // for any view that will be set as you render a row
@@ -25,13 +24,14 @@ class ItemAdapter(private val mItems: List<Item>) : RecyclerView.Adapter<ItemAda
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val itemView = inflater.inflate(R.layout.item_list, parent, false)
+        val itemView = inflater.inflate(R.layout.item_list_rent, parent, false)
 
         return ViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(viewHolder: ItemAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: RentItemsAdapter.ViewHolder, position: Int) {
         val item: Item = mItems.get(position)
+        val dialog = RentDialogFragment()
 
         // Item names
         val nameTextView = viewHolder.nameTextItem
@@ -44,7 +44,8 @@ class ItemAdapter(private val mItems: List<Item>) : RecyclerView.Adapter<ItemAda
         val buttonRent = viewHolder.buttonRentItem
 
         buttonRent.setOnClickListener {
-            Log.i("odoo", "Rent item: ${item.id}")
+            dialog.setItemData(item)
+            dialog.show(fragmentManager, "Rent item dialog")
         }
     }
 

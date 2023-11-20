@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RentedItemsFragment">
+    tools:context=".RentedItemsByUserFragment">
 
     <TextView
         android:id="@+id/rentedItemsLoansTitle"
@@ -48,10 +48,21 @@
         app:layout_constraintTop_toBottomOf="@+id/rentedItemsLoansTitle" />
 
     <TextView
+        android:id="@+id/rentedItemsEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="25dp"
+        android:text="End date"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rentedItemsLoansTitle" />
+
+    <TextView
         android:id="@+id/rentedItemsRenterTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="250dp"
+        android:layout_marginStart="200dp"
         android:layout_marginTop="25dp"
         android:text="Renter"
         android:textStyle="bold"

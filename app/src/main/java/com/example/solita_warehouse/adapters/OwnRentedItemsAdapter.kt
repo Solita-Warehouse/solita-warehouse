@@ -23,7 +23,7 @@ class OwnRentedItemsAdapter(private val mOwnRentedItems: List<RentedItem>) : Rec
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val rentedOwnItemsView = inflater.inflate(R.layout.rented_own_items_list, parent, false)
+        val rentedOwnItemsView = inflater.inflate(R.layout.item_list_your_own_rents, parent, false)
 
         return ViewHolder(rentedOwnItemsView)
     }

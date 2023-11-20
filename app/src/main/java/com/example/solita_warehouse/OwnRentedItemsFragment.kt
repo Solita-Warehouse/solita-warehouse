@@ -16,14 +16,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class LoansFragment : Fragment() {
+class OwnRentedItemsFragment : Fragment() {
     lateinit var ownLoansButton : Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_loans, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_your_rented_items, container, false)
         ownLoansButton = rootView.findViewById(R.id.itemOwnRentedButton)
         val rentedOwnItemsConnection = RentedItemsConnection()
 

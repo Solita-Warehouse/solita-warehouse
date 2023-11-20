@@ -7,53 +7,43 @@
     tools:context=".AvailabilityFragment">
 
     <TextView
-        android:id="@+id/mainTitle4"
+        android:id="@+id/itemIdText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="100dp"
-        android:text="Solita Warehouse"
-        android:textSize="25sp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:text="Item Name"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/productIdSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:height="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainTitle4" />
 
     <Button
         android:id="@+id/startDateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:text="Start Date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productIdSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/itemIdText" />
 
     <TextView
         android:id="@+id/startDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="250dp"
         android:layout_marginTop="66dp"
+        android:layout_marginEnd="70dp"
         android:text="Start Date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productIdSpinner" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemIdText" />
 
     <Button
         android:id="@+id/endDateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:text="End Date"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,10 +53,10 @@
         android:id="@+id/endDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="250dp"
         android:layout_marginTop="75dp"
+        android:layout_marginEnd="70dp"
         android:text="End Date"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startDateTextView" />
 
     <Button
@@ -77,6 +67,16 @@
         android:text="Rent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productIdSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/itemIdText" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rentButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/nav_loans"
         android:icon="@drawable/baseline_construction_24"
-        android:title="Own loans" />
+        android:title="Your rented items" />
     <item
         android:id="@+id/nav_rentitem"
         android:icon="@drawable/baseline_shopping_cart_checkout_24"
@@ -12,15 +12,11 @@
     <item
         android:id="@+id/nav_renteditems"
         android:icon="@drawable/baseline_checklist_24"
-        android:title="Rented items"/>
+        android:title="All rented items"/>
     <item
         android:id="@+id/nav_returnitem"
         android:icon="@drawable/baseline_double_arrow_24"
         android:title="Return item"/>
-    <item
-        android:id="@+id/nav_itemavailability"
-        android:icon="@drawable/baseline_check_circle_outline_24"
-        android:title="Item availability"/>
     <item
         android:id="@+id/nav_reports"
         android:icon="@drawable/baseline_library_books_24"

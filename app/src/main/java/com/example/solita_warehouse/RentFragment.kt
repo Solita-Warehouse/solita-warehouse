@@ -10,13 +10,12 @@ import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solita_warehouse.R
-import com.example.solita_warehouse.adapters.ItemAdapter
+import com.example.solita_warehouse.adapters.RentItemsAdapter
 import data.ItemConnection
 import data.RentedItemsConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.async
 
 class RentFragment : Fragment() {
@@ -68,7 +67,7 @@ class RentFragment : Fragment() {
                     // Use recycler view to display fetched item
                     Log.i("odoo", " All rentable items : $returnItems")
                     val rvItems = rootView.findViewById<View>(R.id.rvItems) as RecyclerView
-                    val adapter = ItemAdapter(returnItems)
+                    val adapter = RentItemsAdapter(returnItems, requireFragmentManager()) //Deprecated, fix later.
 
                     rvItems.adapter = adapter
                     rvItems.layoutManager = LinearLayoutManager(requireContext())

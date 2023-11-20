@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_rentitem -> replaceFragment(R.id.action_to_rentItem, it.title.toString())
                 R.id.nav_renteditems -> replaceFragment(R.id.action_to_rentedItems, it.title.toString())
                 R.id.nav_returnitem -> replaceFragment(R.id.action_to_returnItem, it.title.toString())
-                R.id.nav_itemavailability -> replaceFragment(R.id.action_to_itemAvailability, it.title.toString())
                 R.id.nav_reports -> replaceFragment(R.id.action_to_reports, it.title.toString())
                 R.id.nav_logout -> logOut(R.id.action_to_login)
             }; true

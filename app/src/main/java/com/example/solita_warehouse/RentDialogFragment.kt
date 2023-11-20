@@ -3,111 +3,53 @@ package com.example.solitawarehouse
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment
 import com.example.solita_warehouse.R
 import data.RentedItemsConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import model.EnvVariableLoader
-import com.google.android.material.datepicker.MaterialDatePicker
+import model.Item
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 
-class AvailabilityFragment : Fragment() {
-    private lateinit var mainTitle : TextView
+class RentDialogFragment : DialogFragment() {
     private lateinit var rentButton: Button
-    private lateinit var productIdMenu : Spinner
     private lateinit var startDateButton : Button
     private lateinit var endDateButton : Button
     private lateinit var startDateTextView : TextView
     private lateinit var endDateTextView : TextView
+    private lateinit var cancelButton : Button
+    private lateinit var itemIdText : TextView
+    private lateinit var currentItem : Item
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView =  inflater.inflate(R.layout.fragment_availability, container, false)
-        mainTitle = rootView.findViewById(R.id.mainTitle4)
+        val rootView =  inflater.inflate(R.layout.fragment_rent_dialog, container, false)
         rentButton = rootView.findViewById(R.id.rentButton)
-        productIdMenu = rootView.findViewById(R.id.productIdSpinner)
         startDateButton = rootView.findViewById(R.id.startDateButton)
         endDateButton = rootView.findViewById(R.id.endDateButton)
         startDateTextView = rootView.findViewById(R.id.startDateTextView)
         endDateTextView = rootView.findViewById(R.id.endDateTextView)
+        cancelButton = rootView.findViewById(R.id.cancelButton)
+        itemIdText = rootView.findViewById(R.id.itemIdText)
 
-        val productOptions = arrayOf("Binoculars", "Black Pen", "Blue Silver Pen", "Measure Tape", "Red Pen",
-            "Retractable HP Mouse", "Scissors", "Screwdriver Bits Box", "White Tube", "Wrench")
-
-        //Sets up adapter to list the productOptions on a dropdown menu
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, productOptions)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        productIdMenu.adapter = adapter
-
-        var inputStartDate = ""
-        var inputEndDate = ""
-        var inputProductId = 0
-
-        val URL = EnvVariableLoader.URL
-        val DB = EnvVariableLoader.DB
-        val URL_LOCAL = EnvVariableLoader.URL_LOCAL
         val rentedItemsConnection = RentedItemsConnection()
 
-
-        //Not very good hardcoded solution. FIX PLS!
-        productIdMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                val selectedItem = parentView?.getItemAtPosition(position).toString()
-
-                if (selectedItem == "Binoculars") {
-                    inputProductId = 14
-                }
-                if (selectedItem == "Black Pen") {
-                    inputProductId = 7
-                }
-                if (selectedItem == "Blue Silver Pen") {
-                    inputProductId = 8
-                }
-                if (selectedItem == "Measure Tape") {
-                    inputProductId = 12
-                }
-                if (selectedItem == "Red Pen") {
-                    inputProductId = 6
-                }
-                if (selectedItem == "Retractable HP Mouse") {
-                    inputProductId = 13
-                }
-                if (selectedItem == "Scissors") {
-                    inputProductId = 9
-                }
-                if (selectedItem == "Screwdriver Bits Box") {
-                    inputProductId = 11
-                }
-                if (selectedItem == "White Tube") {
-                    inputProductId = 10
-                }
-                if (selectedItem == "Wrench") {
-                    inputProductId = 5
-                }
-            }
-
-            override fun onNothingSelected(parentView: AdapterView<*>?) {
-                Log.d("SelectedProduct", "Nothing selected")
-            }
-        }
+        itemIdText.setText("Currently selected item \n${currentItem.name}")
 
         rentButton.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
@@ -115,7 +57,7 @@ class AvailabilityFragment : Fragment() {
                     Log.i("odoo", "Either start date or end date was empty.")
                     showAlert("Error", "You cannot leave start or end date empty!")
                 } else {
-                    val returnOrder = rentedItemsConnection.createItemRent(startDateTextView.text.toString(), endDateTextView.text.toString(), inputProductId)
+                    val returnOrder = rentedItemsConnection.createItemRent(startDateTextView.text.toString(), endDateTextView.text.toString(), currentItem.id)
                     showAlert("Success", returnOrder)
                 }
             }
@@ -133,7 +75,18 @@ class AvailabilityFragment : Fragment() {
             }
         }
 
+        cancelButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                Log.i("odoo", currentItem.id.toString())
+                dismiss()
+            }
+        }
+
         return rootView
+    }
+
+    fun setItemData(item: Item) {
+        currentItem = item
     }
 
     fun openDialog(textView: TextView) {
@@ -152,7 +105,6 @@ class AvailabilityFragment : Fragment() {
             month,
             dayOfMonth
         )
-
         datePickerDialog.show()
     }
 
@@ -161,10 +113,9 @@ class AvailabilityFragment : Fragment() {
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("OK") { _, _ ->
-                // Do something when the "OK" button is clicked, if needed
+                dismiss()
             }
             .create()
-
         alertDialog.show()
     }
 
