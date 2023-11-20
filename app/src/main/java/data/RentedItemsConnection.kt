@@ -12,6 +12,8 @@ import org.apache.xmlrpc.client.XmlRpcClient
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 import java.io.EOFException
 import java.net.URL
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class RentedItemsConnection() {
@@ -120,9 +122,23 @@ class RentedItemsConnection() {
         return@withContext rentedItemsById
     }
 
-    suspend fun createItemRent(startDate: String, endDate: String, productId: Int): String = withContext(Dispatchers.IO) {
+    suspend fun createItemRent(startDate: String, endDate: String, productId: Int): Int = withContext(Dispatchers.IO) {
         var orderId = 0
         val currentUser = AuthManager.getInstance().getCurrentUser()
+
+        if (startDate == "Start Date" || endDate == "End Date") {
+            Log.i("odoo", "Start date or end date cannot be left empty.")
+            return@withContext -1
+        }
+
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val startDateAsDate = LocalDate.parse(startDate, dateFormatter)
+        val endDateAsDate = LocalDate.parse(endDate, dateFormatter)
+
+        if (endDateAsDate < startDateAsDate) {
+            Log.i("odoo", "End date cannot be earlier than start date.")
+            return@withContext 0
+        }
 
         //Creates new rental order.
         try {
@@ -184,7 +200,8 @@ class RentedItemsConnection() {
             Log.i("odoo", "Something went wrong adding item to rental order.")
         }
 
-        return@withContext "Rent successfully confirmed with $orderId"
+        Log.i("odoo", "Rent successfully confirmed with $orderId")
+        return@withContext 1
     }
 
     //Just useful when you want to find out all the item id's, otherwise useless, delete later.
@@ -205,20 +222,15 @@ class RentedItemsConnection() {
         }
         return@withContext ""
     }
-    suspend fun deleteOrder(x: Int): MutableList<RentedItem> = withContext(Dispatchers.IO) {
-        val rentedItem = RentedItem(0, 0, 0, 0, "", "", "", "", "")
-
+    suspend fun deleteOrder(salesOrderId: Int): MutableList<RentedItem> = withContext(Dispatchers.IO) {
         try {
-            // Replace with the ID of the rental order you want to delete
-            val salesOrderID = x
-
             val confirmCancel = client.execute(
                 modelConfig,
                 "execute_kw",
                 listOf(
                     DB, 2, PASSWORD,
                     "sale.order", "action_cancel",
-                    listOf(listOf(salesOrderID)) // id of the order_id to cancel
+                    listOf(listOf(salesOrderId)) // id of the order_id to cancel
                 )) as Boolean
 
             if (confirmCancel) {
@@ -234,7 +246,7 @@ class RentedItemsConnection() {
                     listOf(
                         DB, 2, PASSWORD,
                         "sale.order", "unlink",
-                        listOf(listOf(salesOrderID))
+                        listOf(listOf(salesOrderId))
                     )
                 ) as Boolean
 
