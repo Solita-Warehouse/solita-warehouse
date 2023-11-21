@@ -6,36 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.solita_warehouse.R
 import data.RentedItemsConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 import model.RentedItem
-
 
 class ReturnDialogFragment : DialogFragment() {
     private lateinit var cancelButton1: Button
     private lateinit var confirmButton1 : Button
     private lateinit var rentedItem : RentedItem
-    private lateinit var returnText1 : TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-
     ): View? {
         val rootView =  inflater.inflate(R.layout.fragment_return_dialog, container, false)
         cancelButton1 = rootView.findViewById(R.id.cancelButton1)
         confirmButton1 = rootView.findViewById(R.id.confirmButton1)
-
         val rentedItemsConnection = RentedItemsConnection()
-
-        //returnText1.setText("Currently selected item \n${rentedItem.name}")
-
 
         cancelButton1.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
@@ -49,12 +40,8 @@ class ReturnDialogFragment : DialogFragment() {
                 val deleteOrder = rentedItemsConnection.deleteOrder(rentedItem.orderId)
                 dismiss()
         }
-
-
     }
-
         return rootView
-
     }
 
     fun setItemData(item: RentedItem) {

@@ -1,2 +1,2 @@
-ninja: Entering directory `D:\KOULU\Syksy2023\Softala\kot_app\solita-warehouse\sdk\.cxx\Debug\3t67542n\x86_64'
+ninja: Entering directory `C:\Ohjelmia\solita-warehouse\sdk\.cxx\Debug\3t67542n\x86_64'
 ninja: no work to do.

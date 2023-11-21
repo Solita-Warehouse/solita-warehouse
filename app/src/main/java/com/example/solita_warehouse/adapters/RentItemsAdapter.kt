@@ -43,9 +43,13 @@ class RentItemsAdapter(private val mItems: List<Item>, private val fragmentManag
 
         val buttonRent = viewHolder.buttonRentItem
 
-        buttonRent.setOnClickListener {
-            dialog.setItemData(item)
-            dialog.show(fragmentManager, "Rent item dialog")
+        if (item.availability == "Available") {
+            buttonRent.setOnClickListener {
+                dialog.setItemData(item)
+                dialog.show(fragmentManager, "Rent item dialog")
+            }
+        } else {
+            buttonRent.visibility = View.GONE
         }
     }
 
