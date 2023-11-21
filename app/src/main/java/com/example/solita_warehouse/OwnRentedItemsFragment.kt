@@ -33,7 +33,7 @@ class OwnRentedItemsFragment : Fragment() {
                 val returnRentedItemsById = rentedOwnItemsConnection.returnRentedItemsById()
 
                 val rvRentedItems = rootView.findViewById<View>(R.id.rvOwnRentedItems) as RecyclerView
-                val adapter = OwnRentedItemsAdapter(returnRentedItemsById)
+                val adapter = OwnRentedItemsAdapter(returnRentedItemsById, requireFragmentManager())
 
                 rvRentedItems.adapter = adapter
                 rvRentedItems.layoutManager = LinearLayoutManager(requireContext())
@@ -44,7 +44,7 @@ class OwnRentedItemsFragment : Fragment() {
             CoroutineScope(Dispatchers.Main).launch {
                 val returnRentedItemsById = rentedOwnItemsConnection.returnRentedItemsById()
                 val rvRentedItems = rootView.findViewById<View>(R.id.rvOwnRentedItems) as RecyclerView
-                val adapter = OwnRentedItemsAdapter(returnRentedItemsById)
+                val adapter = OwnRentedItemsAdapter(returnRentedItemsById, requireFragmentManager())
                 rvRentedItems.adapter = adapter
                 rvRentedItems.layoutManager = LinearLayoutManager(requireContext())
             }
