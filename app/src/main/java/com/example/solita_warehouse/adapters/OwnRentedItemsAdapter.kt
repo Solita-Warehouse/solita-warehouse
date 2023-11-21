@@ -6,17 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solita_warehouse.ModelManager
 import com.example.solita_warehouse.R
+import com.example.solitawarehouse.ReturnDialogFragment
 import data.RentedItemsConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import model.RentedItem
 
-class OwnRentedItemsAdapter(private val mOwnRentedItems: List<RentedItem>) : RecyclerView.Adapter<OwnRentedItemsAdapter.ViewHolder>() {
+class OwnRentedItemsAdapter(private val mOwnRentedItems: List<RentedItem>, private val fragmentManager: FragmentManager) : RecyclerView.Adapter<OwnRentedItemsAdapter.ViewHolder>() {
 
     inner class ViewHolder(ownRentedItemsView: View) : RecyclerView.ViewHolder(ownRentedItemsView) {
         val nameTextOwnRentedItem = ownRentedItemsView.findViewById<TextView>(R.id.rentedOwnItemNameTitle)
@@ -37,25 +39,21 @@ class OwnRentedItemsAdapter(private val mOwnRentedItems: List<RentedItem>) : Rec
         val rentedOwnNameTextView = viewHolder.nameTextOwnRentedItem
         val endDateNameTextView = viewHolder.endDateTextReturnDate
         val buttonItemAction = viewHolder.buttonItemAction
-        val renteditemsconnection = RentedItemsConnection()
+        val rentedItemsConnection = RentedItemsConnection()
 
         rentedOwnNameTextView.text = rentedItem.name
         endDateNameTextView.text = rentedItem.endDate
 
         // Handle button click for each item
         buttonItemAction.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                Log.i(
-                    "odoo",
-                    "Returning item, id: ${rentedItem.productId} - name: ${rentedItem.name} - orderId: ${rentedItem.orderId} "
-                )
-
-                ModelManager.setItem(rentedItem.name)
-                // it.findNavController().navigate(R.id.action_to_returnItem)
-                val deleteOrder = renteditemsconnection.deleteOrder(rentedItem.orderId)
-            }
+            var dialog = ReturnDialogFragment()
+            dialog.setItemData(rentedItem)
+            dialog.show(fragmentManager, "odoo")
+            // ModelManager.setItem(rentedItem.name)
+            // it.findNavController().navigate(R.id.action_to_returnItem)
         }
     }
+
 
     override fun getItemCount(): Int {
         return mOwnRentedItems.size
