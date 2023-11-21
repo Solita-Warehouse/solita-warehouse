@@ -55,9 +55,9 @@ class RentDialogFragment : DialogFragment() {
             CoroutineScope(Dispatchers.Main).launch {
                 val returnOrder = rentedItemsConnection.createItemRent(startDateTextView.text.toString(), endDateTextView.text.toString(), currentItem.id)
                 if (returnOrder == 0) {
-                    showAlertFailure("Alert", "End date cannot be earlier than start date.")
+                    showAlert("Alert", "End date cannot be earlier than start date.", false)
                 } else if (returnOrder == -1) {
-                    showAlertFailure("Alert", "Start date or end date cannot be left empty.")
+                    showAlert("Alert", "Start date or end date cannot be left empty.", false)
                 } else {
                     showAlert("Success", "Item rent confirmed successfully.")
                 }
@@ -120,22 +120,14 @@ class RentDialogFragment : DialogFragment() {
     //showAlertFailure closes only the alert, eg. you can continue the rent without it closing.
     //Maybe bad practice to have this similar functions but someone pls fix.
 
-    private fun showAlert(title: String, message: String) {
+    private fun showAlert(title: String, message: String, dismissDialog: Boolean = true) {
         val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("OK") { _, _ ->
-                dismiss()
-            }
-            .create()
-        alertDialog.show()
-    }
-
-    private fun showAlertFailure(title: String, message: String) {
-        val alertDialog = AlertDialog.Builder(requireContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton("OK") { _, _ ->
+                if (dismissDialog) {
+                    dismiss()
+                }
             }
             .create()
         alertDialog.show()

@@ -25,6 +25,7 @@ class LoginFragment : Fragment() {
     private lateinit var department : EditText
     private lateinit var eMail : EditText
     private lateinit var loginButton : Button
+    private lateinit var logoutButton : Button
     private lateinit var loginNameText : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,12 +43,36 @@ class LoginFragment : Fragment() {
         eMail = rootView.findViewById(R.id.eMail)
         loginButton = rootView.findViewById(R.id.LoginButton)
         loginNameText = rootView.findViewById(R.id.loginNameText)
+        logoutButton = rootView.findViewById(R.id.logoutButton)
+
         var inputFullName = ""
         var inputDepartment = ""
         var inputEmail = ""
         val URL = EnvVariableLoader.URL
         val DB = EnvVariableLoader.DB
         val URL_LOCAL = EnvVariableLoader.URL_LOCAL
+
+        // Check your condition here
+        val authManager = AuthManager.getInstance()
+        val isLoggedIn = authManager.isLogged()/* your condition to check if the user is logged in */
+
+        // Update UI based on the condition
+        if (isLoggedIn) {
+            // If the user is logged in, hide the input fields and show a welcome message
+            fullName.visibility = View.GONE
+            department.visibility = View.GONE
+            eMail.visibility = View.GONE
+            loginButton.visibility = View.GONE
+            logoutButton.visibility = View.VISIBLE
+            loginNameText.text = "Logged as ${authManager.getCurrentUser().userName}"
+        } else {
+            // If the user is not logged in, show the input fields and login button
+            fullName.visibility = View.VISIBLE
+            department.visibility = View.VISIBLE
+            eMail.visibility = View.VISIBLE
+            loginButton.visibility = View.VISIBLE
+            loginNameText.text = ""
+        }
 
         fullName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -88,11 +113,51 @@ class LoginFragment : Fragment() {
                 val success = AuthManager.getInstance().authSequence(inputFullName, inputEmail)
                 // Show alert after that
                 showAlert("Authentication", "Authentication success : $success")
+                updateUIAfterLogin()
             }
+        }
+
+        // Set click listener for the logout button
+        logoutButton.setOnClickListener {
+            AuthManager.getInstance().logout()
+            // After logging out, update UI
+            updateUIAfterLogout()
         }
 
         return rootView
     }
+    private fun updateUIAfterLogin() {
+        val authManager = AuthManager.getInstance()
+        val isLoggedIn = authManager.isLogged()
+        if (isLoggedIn) {
+            // If the user is logged in, hide the input fields and show a welcome message
+            fullName.visibility = View.GONE
+            department.visibility = View.GONE
+            eMail.visibility = View.GONE
+            loginButton.visibility = View.GONE
+            logoutButton.visibility = View.VISIBLE
+            loginNameText.text = "Logged as ${authManager.getCurrentUser().userName}"
+        } else {
+            // If the user is not logged in, show the input fields and login button
+            fullName.visibility = View.VISIBLE
+            department.visibility = View.VISIBLE
+            eMail.visibility = View.VISIBLE
+            loginButton.visibility = View.VISIBLE
+            logoutButton.visibility = View.GONE
+            loginNameText.text = ""
+        }
+    }
+
+    private fun updateUIAfterLogout() {
+        // After logging out, hide welcome and logout, show input fields and login button
+        fullName.visibility = View.VISIBLE
+        department.visibility = View.VISIBLE
+        eMail.visibility = View.VISIBLE
+        loginButton.visibility = View.VISIBLE
+        logoutButton.visibility = View.GONE
+        loginNameText.text = ""
+    }
+
     private fun showAlert(title: String, message : String) {
         val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle(title)

@@ -27,7 +27,7 @@ class ItemConnection() {
         val itemsList : Array<*>;
         val authManager = AuthManager.getInstance()
         try {
-             itemsList = client.execute(
+            itemsList = client.execute(
                 modelConfig,
                 "execute_kw",
                 listOf(

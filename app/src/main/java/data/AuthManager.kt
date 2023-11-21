@@ -98,6 +98,11 @@ class AuthManager private constructor() {
             }
         }
     }
+    fun logout(){
+        currentUser = null
+        uid = null
+        userPassword = null
+    }
     fun getUid(): Any? {
         Log.d("odoo", "UID current value when got ${uid}");
         return uid
@@ -112,5 +117,12 @@ class AuthManager private constructor() {
         else{
             return currentUser as User
         }
+    }
+
+    fun isLogged(): Boolean{
+        if(currentUser == null){
+            return false
+        }
+        return true
     }
 }
