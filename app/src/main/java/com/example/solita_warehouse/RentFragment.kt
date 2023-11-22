@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solita_warehouse.R
 import com.example.solita_warehouse.adapters.RentItemsAdapter
-import data.ItemConnection
 import data.RentedItemsConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,37 +32,8 @@ class RentFragment : Fragment() {
             CoroutineScope(Dispatchers.Main).launch {
                 // Get all rentable item form Odoo
                 try {
-                    val itemConnection =  ItemConnection()
-                    //var returnItems = itemConnection.returnItems()
-
-                    // Fetch all rental_orders
                     val rentedItemsConnection = RentedItemsConnection()
-                    //val returnRentedItems = rentedItemsConnection.returnRentedItems()
-
-                    // Use async to fetch data concurrently
-                    val itemsDeferred = async { itemConnection.returnItems() }
-                    val rentedItemsDeferred = async { rentedItemsConnection.returnRentedItems() }
-
-                    // Wait for both deferred values to be available
-                    val returnItems = itemsDeferred.await()
-                    val returnRentedItems = rentedItemsDeferred.await()
-
-                    // Check if the list is empty,
-                    // bad solution because it'll throw an error if there are no rent
-                    // Could be better to lift up the try catch here and remove it from functions
-                    // in ItemConnection
-                    if (returnRentedItems.isEmpty()) {
-                        throw IllegalStateException("The list of rented items is empty.")
-                    }
-
-                    val idList = returnRentedItems.map { it.name }
-                    Log.i("odoo", " Currently rented items : $returnRentedItems")
-                    // Check availability
-                    for (item in returnItems) {
-                        if (idList.contains(item.name)) {
-                            item.setAvailableStatus("Not available")
-                        }
-                    }
+                    val returnItems = rentedItemsConnection.returnItemsWithAvailibilityStatus()
                     // Use recycler view to display fetched item
                     Log.i("odoo", " All rentable items : $returnItems")
                     val rvItems = rootView.findViewById<View>(R.id.rvItems) as RecyclerView

@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_logout -> logOut(R.id.action_to_login)
             }; true
         }
-
     }
 
     private fun replaceFragment(fragment: Int, title: String) {
