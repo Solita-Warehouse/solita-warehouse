@@ -39,7 +39,6 @@ class RentedItemsConnection() {
         try {
             rentedItems.clear()
             val authManager = AuthManager.getInstance()
-
             val rentalOrderSearch = client.execute(
                 modelConfig,
                 "execute_kw",
@@ -52,60 +51,8 @@ class RentedItemsConnection() {
             ) as Array<*>
 
             for (data in rentalOrderSearch) {
-                var shouldAddItem = true
-                val rentedItem = RentedItem(0, 0, 0, 0, "", "", "", "", "")
-
-                for (item in data as Map<*, *>) {
-                    if (item.key == "id") {
-                        rentedItem.id = item.value as Int
-                    }
-                    if (item.key == "name") {
-                        rentedItem.name = item.value.toString()
-                    }
-                    if (item.key == "state") {
-                        if (item.value.toString() == "cancel") {
-                            shouldAddItem = false
-                            break
-                        } else {
-                            rentedItem.state = item.value.toString()
-                        }
-                    }
-                    if (item.key == "end_date") {
-                        rentedItem.endDate = item.value.toString()
-                    }
-                    if (item.key == "order_partner_id") {
-                        if (item.value is Array<*>) {
-                            for (subItem in item.value as Array<*>) {
-                                if (subItem is Int) {
-                                    rentedItem.partnerId = subItem
-                                } else {
-                                    rentedItem.renter = subItem.toString()
-                                }
-                            }
-                        }
-                    }
-                    if (item.key == "order_id") {
-                        if (item.value is Array<*>) {
-                            for (subItem in item.value as Array<*>) {
-                                if (subItem is Int) {
-                                    rentedItem.orderId = subItem
-                                } else {
-                                    rentedItem.orderName = subItem.toString()
-                                }
-                            }
-                        }
-                    }
-                    if (item.key == "product_id") {
-                        if (item.value is Array<*>) {
-                            for (subItem in item.value as Array<*>) {
-                                if (subItem is Int) {
-                                    rentedItem.productId = subItem
-                                }
-                            }
-                        }
-                    }
-                }
-                if (shouldAddItem) {
+                val rentedItem = RentedItem.createFromApiData(data as Map<*, *>)
+                if (rentedItem != null && rentedItem.state != "cancel") {
                     rentedItems.add(rentedItem)
                 }
             }
@@ -301,16 +248,9 @@ class RentedItemsConnection() {
                 for (item in itemsList) {
                     // Ensure item is a Map (dictionary)
                     if (item is Map<*, *>) {
-                        // Make sure the item is rentable
-                        if(item["rental"] == true){
-                            val name = item["name"]
-                            val id = item["id"]
-                            val quantity = (item["virtual_available"] as? Double) ?: 0.0
-                            if (id is Int) {
-                                // Create new item with fetched data and default available value true
-                                var newItem = Item(name.toString(), id, "Available", quantity)
-                                itemList.add(newItem)
-                            }
+                        val newItem = Item.createFromApiData(item)
+                        if (newItem != null) {
+                            itemList.add(newItem)
                         }
                     }
                 }
