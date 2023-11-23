@@ -52,7 +52,9 @@ class RentedItemsConnection() {
             ) as Array<*>
 
             for (data in rentalOrderSearch) {
+                var shouldAddItem = true
                 val rentedItem = RentedItem(0, 0, 0, 0, "", "", "", "", "")
+
                 for (item in data as Map<*, *>) {
                     if (item.key == "id") {
                         rentedItem.id = item.value as Int
@@ -61,7 +63,12 @@ class RentedItemsConnection() {
                         rentedItem.name = item.value.toString()
                     }
                     if (item.key == "state") {
-                        rentedItem.state = item.value.toString()
+                        if (item.value.toString() == "cancel") {
+                            shouldAddItem = false
+                            break
+                        } else {
+                            rentedItem.state = item.value.toString()
+                        }
                     }
                     if (item.key == "end_date") {
                         rentedItem.endDate = item.value.toString()
@@ -98,13 +105,16 @@ class RentedItemsConnection() {
                         }
                     }
                 }
-                rentedItems.add(rentedItem)
+                if (shouldAddItem) {
+                    rentedItems.add(rentedItem)
+                }
             }
         } catch (e: Exception) {
             Log.i("odoo", "crashed :( $e")
             throw error(e)
-            return@withContext mutableListOf();
+            return@withContext mutableListOf()
         }
+
         return@withContext rentedItems
     }
 
@@ -115,7 +125,7 @@ class RentedItemsConnection() {
         Log.i("odoo", "current user : ${currentUser}")
         Log.i("odoo", "current user's partner id : ${currentUser.partnerId}")
         for (item in rentedItems) {
-            if (item.partnerId == currentUser.partnerId && item.state != "cancel") {
+            if (item.partnerId == currentUser.partnerId) {
                 rentedItemsById.add(item)
             }
         }
