@@ -115,7 +115,7 @@ class RentedItemsConnection() {
         Log.i("odoo", "current user : ${currentUser}")
         Log.i("odoo", "current user's partner id : ${currentUser.partnerId}")
         for (item in rentedItems) {
-            if (item.partnerId == currentUser.partnerId) {
+            if (item.partnerId == currentUser.partnerId && item.state != "cancel") {
                 rentedItemsById.add(item)
             }
         }
@@ -247,7 +247,7 @@ class RentedItemsConnection() {
                 println("Failed to cancel the rental order.")
             }
 
-                // Model to delete order (you can only delete a canceled order)
+            // Model to delete order (you can only delete a canceled order)
             /*    val deleteResult = client.execute(
                     modelConfig,
                     "execute_kw",
@@ -265,9 +265,9 @@ class RentedItemsConnection() {
                     println("Error deleting the sales order.")
                 } */
 
-            } catch (e: Exception) {
-                println("An error occurred: ${e.message}")
-            }
+        } catch (e: Exception) {
+            println("An error occurred: ${e.message}")
+        }
 
 
         return@withContext rentedItems
@@ -283,7 +283,7 @@ class RentedItemsConnection() {
                     DB, authManager.getUid(), authManager.getPassword(),
                     "product.product", "search_read",
                     listOf(emptyList<Any>()),
-                    mapOf("fields" to listOf("name", "id", "rental"))
+                    mapOf("fields" to listOf("name", "id", "rental", "virtual_available"))
                 )
             ) as Array<*>
 
@@ -295,9 +295,10 @@ class RentedItemsConnection() {
                         if(item["rental"] == true){
                             val name = item["name"]
                             val id = item["id"]
+                            val quantity = (item["virtual_available"] as? Double) ?: 0.0
                             if (id is Int) {
                                 // Create new item with fetched data and default available value true
-                                var newItem = Item(name.toString(), id, "Available")
+                                var newItem = Item(name.toString(), id, "Available", quantity)
                                 itemList.add(newItem)
                             }
                         }
@@ -306,7 +307,6 @@ class RentedItemsConnection() {
             } else {
                 Log.i("odoo", "No items found.")
             }
-
             return@withContext itemList
 
         } catch (e: EOFException) {
@@ -319,6 +319,7 @@ class RentedItemsConnection() {
 
         return@withContext mutableListOf();
     }
+
     suspend fun returnItemsWithAvailibilityStatus(): MutableList<Item> {
         // if any of those two fails, throw error
         val returnItems = returnItems()
@@ -326,11 +327,6 @@ class RentedItemsConnection() {
         val idList = returnRentedItems.map { it.name }
         Log.i("odoo", " Currently rented items : $returnRentedItems")
         // Check availability
-        for (item in returnItems) {
-            if (idList.contains(item.name)) {
-                item.setAvailableStatus("Not available")
-            }
-        }
         return returnItems
     }
 }
