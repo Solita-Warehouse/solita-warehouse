@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.async
 
 class RentFragment : Fragment() {
-    private lateinit var itemButton : Button
+    private lateinit var itemButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,10 +30,10 @@ class RentFragment : Fragment() {
         itemButton.setOnClickListener {
             //Could be defined in ViewModel
             CoroutineScope(Dispatchers.Main).launch {
-                // Get all rentable item form Odoo
+                // Get all rentable items from Odoo
                 try {
                     val rentedItemsConnection = RentedItemsConnection()
-                    val returnItems = rentedItemsConnection.returnItemsWithAvailibilityStatus()
+                    val returnItems = rentedItemsConnection.returnItems()
                     // Use recycler view to display fetched item
                     Log.i("odoo", " All rentable items : $returnItems")
                     val rvItems = rootView.findViewById<View>(R.id.rvItems) as RecyclerView
@@ -43,9 +43,9 @@ class RentFragment : Fragment() {
                     rvItems.layoutManager = LinearLayoutManager(requireContext())
 
                 } catch (e: Exception) {
-                // Handle exceptions
-                Log.e("odoo", "Error fetching data: ${e.message}", e)
-            }
+                    // Handle exceptions
+                    Log.e("odoo", "Error fetching data: ${e.message}", e)
+                }
 
             }
         }

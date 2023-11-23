@@ -329,14 +329,4 @@ class RentedItemsConnection() {
 
         return@withContext mutableListOf();
     }
-
-    suspend fun returnItemsWithAvailibilityStatus(): MutableList<Item> {
-        // if any of those two fails, throw error
-        val returnItems = returnItems()
-        val returnRentedItems = returnRentedItems()
-        val idList = returnRentedItems.map { it.name }
-        Log.i("odoo", " Currently rented items : $returnRentedItems")
-        // Check availability
-        return returnItems
-    }
 }
