@@ -14,10 +14,6 @@
         android:icon="@drawable/baseline_checklist_24"
         android:title="All rented items"/>
     <item
-        android:id="@+id/nav_returnitem"
-        android:icon="@drawable/baseline_double_arrow_24"
-        android:title="Return item"/>
-    <item
         android:id="@+id/nav_reports"
         android:icon="@drawable/baseline_library_books_24"
         android:title="Reports"/>

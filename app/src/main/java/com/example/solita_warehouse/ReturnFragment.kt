@@ -173,7 +173,7 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
                     val resImage = Utils.getBitmapFromAsset(requireContext(), "scissors.jpg")
                     val capturedImage = Utils.getBitmapFromUri(savedUri, requireContext())
 
-                    val image = TensorImage.fromBitmap(capturedImage)
+                    val image = TensorImage.fromBitmap(resImage)
                     getPredictions(image)
                 }
 
@@ -230,12 +230,11 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
             dialog.setItemData(ModelManager.getItem())
             dialog.show(parentFragmentManager, "odoo")
             findNavController().navigate(R.id.action_to_loansFragment)
-
-        }else{
+        } else {
             showToast("item not recognized")
         }
-
     }
+
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
