@@ -6,10 +6,12 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.solita_warehouse.ml.SsdMobilenetV11Metadata1
 import com.google.android.material.navigation.NavigationView
+import data.AuthManager
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
+        drawerLayout.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED)
 
         toggle.syncState()
 
@@ -57,10 +60,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun logOut(fragment: Int) {
-        Log.i("","Logged out")
+        val authManager = AuthManager.getInstance()
+        authManager.logout()
+        drawerLayout.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED)
         navController.navigate(fragment)
         drawerLayout.closeDrawers()
-
         setTitle("Login")
     }
 

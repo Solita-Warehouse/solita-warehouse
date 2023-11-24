@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.drawerlayout.widget.DrawerLayout
+import com.example.solita_warehouse.MainActivity
 import com.example.solita_warehouse.R
 import data.AuthManager
 import kotlinx.coroutines.CoroutineScope
@@ -122,6 +124,7 @@ class LoginFragment : Fragment() {
             AuthManager.getInstance().logout()
             // After logging out, update UI
             updateUIAfterLogout()
+            (requireActivity() as MainActivity).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
 
         return rootView
@@ -137,6 +140,7 @@ class LoginFragment : Fragment() {
             loginButton.visibility = View.GONE
             logoutButton.visibility = View.VISIBLE
             loginNameText.text = "Logged as ${authManager.getCurrentUser().userName}"
+            (requireActivity() as MainActivity).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         } else {
             // If the user is not logged in, show the input fields and login button
             fullName.visibility = View.VISIBLE
@@ -145,6 +149,7 @@ class LoginFragment : Fragment() {
             loginButton.visibility = View.VISIBLE
             logoutButton.visibility = View.GONE
             loginNameText.text = ""
+            (requireActivity() as MainActivity).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
     }
 
