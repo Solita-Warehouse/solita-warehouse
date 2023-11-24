@@ -46,11 +46,9 @@ class OwnRentedItemsAdapter(private val mOwnRentedItems: List<RentedItem>, priva
 
         // Handle button click for each item
         buttonItemAction.setOnClickListener {
-            var dialog = ReturnDialogFragment()
-            dialog.setItemData(rentedItem)
-            dialog.show(fragmentManager, "odoo")
-            // ModelManager.setItem(rentedItem.name)
-            // it.findNavController().navigate(R.id.action_to_returnItem)
+
+            ModelManager.setItem(rentedItem)
+            it.findNavController().navigate(R.id.action_to_returnItem)
         }
     }
 

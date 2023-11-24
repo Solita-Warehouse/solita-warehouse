@@ -48,6 +48,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_logout -> logOut(R.id.action_to_login)
             }; true
         }
+        navView.menu.findItem(R.id.nav_returnitem).isVisible = false
+
     }
 
     private fun replaceFragment(fragment: Int, title: String) {

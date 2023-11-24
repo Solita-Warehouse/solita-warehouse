@@ -32,7 +32,9 @@ import android.content.ContentValues
 import android.provider.MediaStore
 import android.os.Environment
 import java.io.FileInputStream
-
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 
 class ReturnFragment : Fragment(R.layout.fragment_return) {
 
@@ -42,6 +44,8 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
     private lateinit var imageCapture: ImageCapture
     private var isFrontCameraActive = false
     private lateinit var savedUri: Uri
+
+
 
     lateinit var labels: List<String>
     lateinit var model: SsdMobilenetV11Metadata1
@@ -70,6 +74,12 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
 
         captureButton.setOnClickListener {
             takePhoto()
+
+        }
+        val cancelButton = view.findViewById<Button>(R.id.cancel_button)
+
+        cancelButton.setOnClickListener {
+            findNavController().navigate(R.id.action_to_loansFragment)
 
         }
     }
@@ -212,10 +222,15 @@ class ReturnFragment : Fragment(R.layout.fragment_return) {
                 i = index
             }
         }
-        if (fl2 > 0.5 && (ModelManager.getItem().lowercase() == labels[classes.get(i).toInt()])){
-            showToast(labels[classes.get(i).toInt()] + " " + fl2.toString())
+        if (fl2 > 0.5 && (ModelManager.getItem().name.lowercase() == labels[classes.get(i).toInt()])){
+            //showToast(labels[classes.get(i).toInt()] + " " + fl2.toString())
             println(labels[classes.get(i).toInt()] + " " + fl2.toString())
-            showToast("item recognized")
+
+            var dialog = ReturnDialogFragment()
+            dialog.setItemData(ModelManager.getItem())
+            dialog.show(parentFragmentManager, "odoo")
+            findNavController().navigate(R.id.action_to_loansFragment)
+
         }else{
             showToast("item not recognized")
         }
