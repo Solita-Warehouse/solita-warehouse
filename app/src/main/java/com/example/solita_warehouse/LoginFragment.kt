@@ -13,6 +13,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.solita_warehouse.MainActivity
 import com.example.solita_warehouse.R
 import data.AuthManager
@@ -32,7 +34,6 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,28 +54,6 @@ class LoginFragment : Fragment() {
         val URL = EnvVariableLoader.URL
         val DB = EnvVariableLoader.DB
         val URL_LOCAL = EnvVariableLoader.URL_LOCAL
-
-        // Check your condition here
-        val authManager = AuthManager.getInstance()
-        val isLoggedIn = authManager.isLogged()/* your condition to check if the user is logged in */
-
-        // Update UI based on the condition
-        if (isLoggedIn) {
-            // If the user is logged in, hide the input fields and show a welcome message
-            fullName.visibility = View.GONE
-            department.visibility = View.GONE
-            eMail.visibility = View.GONE
-            loginButton.visibility = View.GONE
-            logoutButton.visibility = View.VISIBLE
-            loginNameText.text = "Logged as ${authManager.getCurrentUser().userName}"
-        } else {
-            // If the user is not logged in, show the input fields and login button
-            fullName.visibility = View.VISIBLE
-            department.visibility = View.VISIBLE
-            eMail.visibility = View.VISIBLE
-            loginButton.visibility = View.VISIBLE
-            loginNameText.text = ""
-        }
 
         fullName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -110,68 +89,28 @@ class LoginFragment : Fragment() {
         })
 
         loginButton.setOnClickListener {
-            Log.d("odoo", "### AUTHENTICATION ###");
+            Log.d("odoo", "### AUTHENTICATION ###")
             CoroutineScope(Dispatchers.Main).launch {
                 val success = AuthManager.getInstance().authSequence(inputFullName, inputEmail)
-                // Show alert after that
-                showAlert("Authentication", "Authentication success : $success")
-                updateUIAfterLogin()
+                showAlert("Authentication", "Authentication success: $success") {
+                    if (success) {
+                        findNavController().navigate(R.id.action_to_loansFragment)
+                        (requireActivity() as MainActivity).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                    }
+                }
             }
         }
-
-        // Set click listener for the logout button
-        logoutButton.setOnClickListener {
-            AuthManager.getInstance().logout()
-            // After logging out, update UI
-            updateUIAfterLogout()
-            (requireActivity() as MainActivity).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        }
-
         return rootView
     }
-    private fun updateUIAfterLogin() {
-        val authManager = AuthManager.getInstance()
-        val isLoggedIn = authManager.isLogged()
-        if (isLoggedIn) {
-            // If the user is logged in, hide the input fields and show a welcome message
-            fullName.visibility = View.GONE
-            department.visibility = View.GONE
-            eMail.visibility = View.GONE
-            loginButton.visibility = View.GONE
-            logoutButton.visibility = View.VISIBLE
-            loginNameText.text = "Logged as ${authManager.getCurrentUser().userName}"
-            (requireActivity() as MainActivity).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        } else {
-            // If the user is not logged in, show the input fields and login button
-            fullName.visibility = View.VISIBLE
-            department.visibility = View.VISIBLE
-            eMail.visibility = View.VISIBLE
-            loginButton.visibility = View.VISIBLE
-            logoutButton.visibility = View.GONE
-            loginNameText.text = ""
-            (requireActivity() as MainActivity).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        }
-    }
 
-    private fun updateUIAfterLogout() {
-        // After logging out, hide welcome and logout, show input fields and login button
-        fullName.visibility = View.VISIBLE
-        department.visibility = View.VISIBLE
-        eMail.visibility = View.VISIBLE
-        loginButton.visibility = View.VISIBLE
-        logoutButton.visibility = View.GONE
-        loginNameText.text = ""
-    }
-
-    private fun showAlert(title: String, message : String) {
+    private fun showAlert(title: String, message : String, onOkClicked: () -> Unit) {
         val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("OK") { _, _ ->
-                // Do something when the "OK" button is clicked, if needed
+                onOkClicked.invoke()
             }
             .create()
-
         alertDialog.show()
     }
 }
