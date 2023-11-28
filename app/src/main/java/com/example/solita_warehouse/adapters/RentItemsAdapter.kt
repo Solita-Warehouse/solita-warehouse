@@ -40,17 +40,19 @@ class RentItemsAdapter(private val mItems: List<Item>, private val fragmentManag
         // Item availability
         val availableTextView = viewHolder.availableTextItem
 
-
         val buttonRent = viewHolder.buttonRentItem
 
-        if (item.quantity > 0.0) {
+        if (item.quantity > 0.0 && item.description != "Broken") {
             buttonRent.setOnClickListener {
                 dialog.setItemData(item)
                 dialog.show(fragmentManager, "Rent item dialog")
             }
-        } else {
+        } else if (item.quantity < 1.0) {
             buttonRent.visibility = View.GONE
             availableTextView.setText("Not Available")
+        } else if (item.description == "Broken") {
+            buttonRent.visibility = View.GONE
+            availableTextView.setText("Broken")
         }
     }
 

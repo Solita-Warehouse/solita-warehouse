@@ -240,7 +240,7 @@ class RentedItemsConnection() {
                     DB, authManager.getUid(), authManager.getPassword(),
                     "product.product", "search_read",
                     listOf(emptyList<Any>()),
-                    mapOf("fields" to listOf("name", "id", "rental", "virtual_available"))
+                    mapOf("fields" to listOf("name", "id", "rental", "virtual_available", "description"))
                 )
             ) as Array<*>
 
